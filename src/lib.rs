@@ -1,12 +1,13 @@
 use core::fmt;
-use std::{env, fs::File, io::BufReader, path::PathBuf};
+use std::{env, fs::File, io::BufReader, path::PathBuf, process::exit};
 
 use serde::{Deserialize, Serialize};
 
+#[allow(unused_imports)]
 use crate::net::NetworkManager;
 
+mod cmd;
 mod net;
-mod parse;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserInformation {
@@ -34,7 +35,6 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
 
     let home_str: &str = home_dir.to_str().unwrap();
     let full_path = String::from(home_str) + "/.passport/authentication.json";
-
     let file: File = File::open(full_path)?;
     let reader = BufReader::new(file);
     let user: UserInformation = serde_json::from_reader(reader)?;
@@ -42,22 +42,24 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
 }
 
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    parse::say_hello();
-    let local_user = match get_local_information() {
-        Ok(person) => person,
-        Err(e) => return Err(e),
-    };
-    println!("{}", local_user);
-    #[allow(unused_variables)]
-    let nm: NetworkManager = NetworkManager::new();
-    let token_valid = nm.validate_token(&local_user.auth_token).await?;
-    if token_valid {
-        println!("Everything good!");
-    } else {
-        println!("Nothing good!");
-    }
-    // for arg in env::args() {
-    //     println!("{arg}");
+    // let local_user = match get_local_information() {
+    //     Ok(person) => person,
+    //     Err(e) => return Err(e),
+    // };
+    // let nm: NetworkManager = NetworkManager::new();
+    // let token_valid = nm.validate_token(&local_user.auth_token).await?;
+    // if token_valid {
+    //     println!("Everything good!");
+    // } else {
+    //     println!("Nothing good!");
     // }
+    let command = match cmd::get_command() {
+        Some(cmd) => cmd,
+        None => {
+            println!("rustport: Invalid command");
+            exit(0);
+        }
+    };
+    command.execute()?;
     Ok(())
 }
