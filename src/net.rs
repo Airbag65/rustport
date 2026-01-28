@@ -1,11 +1,12 @@
+pub mod login;
 pub mod valid;
 
+#[derive(Clone)]
 pub struct NetworkManager {
     client: reqwest::Client,
 }
 
 impl NetworkManager {
-    #[allow(dead_code)]
     pub fn new() -> NetworkManager {
         let client = match reqwest::Client::builder()
             .danger_accept_invalid_certs(true)

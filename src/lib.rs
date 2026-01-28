@@ -1,5 +1,11 @@
 use core::fmt;
-use std::{env, fs::File, io::BufReader, path::PathBuf, process::exit};
+use std::{
+    env,
+    fs::{self, File},
+    io::BufReader,
+    path::PathBuf,
+    process::exit,
+};
 
 use serde::{Deserialize, Serialize};
 
@@ -35,24 +41,20 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
 
     let home_str: &str = home_dir.to_str().unwrap();
     let full_path = String::from(home_str) + "/.passport/authentication.json";
-    let file: File = File::open(full_path)?;
+    let file: File = match File::open(&full_path) {
+        Ok(f) => f,
+        Err(_) => {
+            fs::create_dir(PathBuf::from(&full_path))?;
+            let f = fs::File::create(full_path)?;
+            f
+        }
+    };
     let reader = BufReader::new(file);
     let user: UserInformation = serde_json::from_reader(reader)?;
     Ok(user)
 }
 
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    // let local_user = match get_local_information() {
-    //     Ok(person) => person,
-    //     Err(e) => return Err(e),
-    // };
-    // let nm: NetworkManager = NetworkManager::new();
-    // let token_valid = nm.validate_token(&local_user.auth_token).await?;
-    // if token_valid {
-    //     println!("Everything good!");
-    // } else {
-    //     println!("Nothing good!");
-    // }
     let command = match cmd::get_command() {
         Some(cmd) => cmd,
         None => {

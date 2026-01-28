@@ -11,7 +11,6 @@ struct ValidateTokenReq {
 }
 
 impl NetworkManager {
-    #[allow(dead_code)]
     pub async fn validate_token(
         &self,
         auth_token: &str,

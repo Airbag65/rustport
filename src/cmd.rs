@@ -1,7 +1,8 @@
 use std::{env, process::exit};
 
-use crate::cmd::status::StatusCommand;
+use crate::cmd::{login::LoginCommand, status::StatusCommand};
 
+pub mod login;
 pub mod status;
 
 pub trait Command {
@@ -20,6 +21,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     match command_string.as_str() {
         "status" => return Some(Box::new(StatusCommand)),
         "st" => return Some(Box::new(StatusCommand)),
+        "login" => return Some(Box::new(LoginCommand)),
         _ => return None,
     };
 }
