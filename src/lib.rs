@@ -44,7 +44,7 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
     let file: File = match File::open(&full_path) {
         Ok(f) => f,
         Err(_) => {
-            fs::create_dir(PathBuf::from(&full_path))?;
+            fs::create_dir(PathBuf::from(String::from(home_str) + "/.passport"))?;
             let f = fs::File::create(full_path)?;
             f
         }
@@ -54,6 +54,14 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
     Ok(user)
 }
 
+pub fn save_pem_string(pem_string: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+    path.push(".passport");
+    fs::create_dir_all(&path)?;
+    path.push("publicKey.pem");
+    fs::write(path, pem_string)?;
+    Ok(())
+}
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let command = match cmd::get_command() {
         Some(cmd) => cmd,

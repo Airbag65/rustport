@@ -10,38 +10,55 @@ use tokio::{runtime::Handle, task::block_in_place};
 use crate::{
     UserInformation, cmd, get_local_information,
     net::{NetworkManager, login::LoginRes},
+    save_pem_string,
 };
 
 pub struct LoginCommand;
 
 impl cmd::Command for LoginCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
-        println!("Login command");
         let email = read_input("Email: ")?;
         let password = scanpw!("Password: ");
         println!();
         let local_info: UserInformation = get_local_information()?;
-
         block_in_place(move || {
             Handle::current().block_on(async move {
                 let nm: NetworkManager = NetworkManager::new();
-                let res: bool = match nm.validate_token(&local_info.auth_token).await {
+                let has_valid_token: bool = match nm.validate_token(&local_info.auth_token).await {
                     Ok(v) => v.to_owned(),
                     Err(e) => {
                         ceprintln!("<red>Something went wrong:</> {:?}", e);
                         return;
                     }
                 };
-                if res {
+                if has_valid_token {
                     cprintln!(
                         "<yellow>Already logged in with email '{}'</>",
                         local_info.email
                     );
                     return;
                 }
-                let res: LoginRes = nm.login(email, password).await.unwrap();
-                println!("{:?}", res);
-                todo!("Save PEM string, save local auth")
+                let res: LoginRes = nm.login(email.clone(), password).await.unwrap();
+                match res.response_code {
+                    200 => {
+                        let _ = match save_pem_string(&res.pem_string) {
+                            Ok(_) => {}
+                            Err(e) => eprintln!("Error {:?}", e),
+                        };
+                        // let _ = match save_local_auth(
+                        //     &res.name,
+                        //     &res.surname,
+                        //     &res.email,
+                        //     &res.auth_token,
+                        // ) {};
+                    }
+                    404 => cprintln!("<yellow>Account with email '{}' does not exist</>", &email),
+                    418 => cprintln!("<yellow>Already logged in with email '{}'</>", &email),
+                    401 => cprintln!("<red>Incorrect password</>"),
+                    _ => {}
+                }
+
+                // todo!("Save PEM string, save local auth")
             })
         });
         Ok(())

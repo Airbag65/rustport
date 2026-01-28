@@ -12,13 +12,13 @@ struct LoginReq {
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct LoginRes {
-    response_code: u16,
-    response_message: String,
-    auth_token: String,
-    name: String,
-    surname: String,
-    email: String,
-    pem_string: String,
+    pub response_code: u16,
+    pub response_message: String,
+    pub auth_token: String,
+    pub name: String,
+    pub surname: String,
+    pub email: String,
+    pub pem_string: String,
 }
 
 impl NetworkManager {
