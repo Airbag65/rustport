@@ -1,7 +1,8 @@
 use std::{env, process::exit};
 
-use crate::cmd::{login::LoginCommand, status::StatusCommand};
+use crate::cmd::{init::InitCommand, login::LoginCommand, status::StatusCommand};
 
+pub mod init;
 pub mod login;
 pub mod status;
 
@@ -22,6 +23,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "status" => return Some(Box::new(StatusCommand)),
         "st" => return Some(Box::new(StatusCommand)),
         "login" => return Some(Box::new(LoginCommand)),
+        "init" => return Some(Box::new(InitCommand)),
         _ => return None,
     };
 }
