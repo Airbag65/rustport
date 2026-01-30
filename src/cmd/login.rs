@@ -1,16 +1,14 @@
-use std::{
-    fmt::Display,
-    io::{self, Write},
-};
-
 use color_print::{ceprintln, cprintln};
 use scanpw::scanpw;
 use tokio::{runtime::Handle, task::block_in_place};
 
 use crate::{
-    UserInformation, cmd, get_local_information,
+    UserInformation, cmd,
     net::{NetworkManager, login::LoginRes},
-    save_pem_string,
+    utilities::{
+        file::{get_local_information, save_pem_string},
+        read_input,
+    },
 };
 
 pub struct LoginCommand;
@@ -45,6 +43,7 @@ impl cmd::Command for LoginCommand {
                             Ok(_) => {}
                             Err(e) => eprintln!("Error {:?}", e),
                         };
+                        todo!("Save LOCAL AUTH");
                         // let _ = match save_local_auth(
                         //     &res.name,
                         //     &res.surname,
@@ -57,19 +56,8 @@ impl cmd::Command for LoginCommand {
                     401 => cprintln!("<red>Incorrect password</>"),
                     _ => {}
                 }
-
-                // todo!("Save PEM string, save local auth")
             })
         });
         Ok(())
     }
-}
-
-fn read_input(prompt: impl Display) -> Result<String, Box<dyn std::error::Error>> {
-    let mut buffer = String::new();
-    print!("{prompt}");
-    let _ = std::io::stdout().flush().unwrap();
-    io::stdin().read_line(&mut buffer)?;
-    buffer = buffer.trim_ascii_end().to_owned();
-    Ok(buffer)
 }

@@ -1,7 +1,7 @@
 use color_print::{ceprintln, cprintln};
 use tokio::{runtime::Handle, task::block_in_place};
 
-use crate::{cmd, get_local_information, net::NetworkManager};
+use crate::{cmd, net::NetworkManager, utilities::file::get_local_information};
 
 pub struct StatusCommand;
 
