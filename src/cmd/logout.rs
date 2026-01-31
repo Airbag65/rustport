@@ -11,7 +11,7 @@ pub struct LogoutCommand;
 
 impl Command for LogoutCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
-        (move || {
+        block_in_place(move || {
             Handle::current().block_on(async move {
                 let nm: NetworkManager = NetworkManager::new();
                 let response: SignOutRes = match nm.sign_out().await {

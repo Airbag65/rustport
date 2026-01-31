@@ -1,7 +1,11 @@
 use color_print::{ceprintln, cprintln};
 use tokio::{runtime::Handle, task::block_in_place};
 
-use crate::{cmd, net::NetworkManager, utilities::file::get_local_information};
+use crate::{
+    cmd,
+    net::NetworkManager,
+    utilities::{file::get_local_information, get_ip},
+};
 
 pub struct StatusCommand;
 
@@ -28,6 +32,7 @@ impl cmd::Command for StatusCommand {
                     println!("-----------------");
                     println!("Name: {} {}", local_info.name, local_info.surname);
                     println!("Email: {}", local_info.email);
+                    println!("Using IP: {}", get_ip());
                 } else {
                     cprintln!("<red>You are not signed in to RUSTPORT!</>");
                     cprintln!("<red>Run 'rustport login' to sign in</>");
