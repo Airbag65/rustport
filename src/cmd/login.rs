@@ -6,7 +6,7 @@ use crate::{
     UserInformation, cmd,
     net::{NetworkManager, login::LoginRes},
     utilities::{
-        file::{get_local_information, save_pem_string},
+        file::{get_local_information, save_local_auth, save_pem_string},
         read_input,
     },
 };
@@ -43,7 +43,23 @@ impl cmd::Command for LoginCommand {
                             Ok(_) => {}
                             Err(e) => eprintln!("Error {:?}", e),
                         };
-                        todo!("Save LOCAL AUTH");
+                        let _ = match save_local_auth(
+                            &res.name,
+                            &res.surname,
+                            &res.email,
+                            &res.auth_token,
+                        ) {
+                            Ok(_) => {
+                                cprintln!(
+                                    "<green>You are now logged in as '{} {}'</>",
+                                    res.name,
+                                    res.surname
+                                );
+                            }
+                            Err(e) => eprintln!("Error {:?}", e),
+                        };
+                        // todo!("Save LOCAL AUTH");
+
                         // let _ = match save_local_auth(
                         //     &res.name,
                         //     &res.surname,

@@ -3,7 +3,7 @@ use serde::Serialize;
 use serde_json;
 use std;
 
-use crate::net::NetworkManager;
+use crate::{net::NetworkManager, utilities::get_ip};
 
 #[derive(Serialize, Debug)]
 struct ValidateTokenReq {
@@ -21,7 +21,7 @@ impl NetworkManager {
         let req_string: String = serde_json::to_string(&req_body)?;
         let res = self
             .client
-            .post("https://127.0.0.1:443/auth/valid")
+            .post("https://".to_owned() + get_ip().as_str() + ":443/auth/valid")
             .header("Content-Type", "application/json")
             .body(req_string.clone())
             .send()

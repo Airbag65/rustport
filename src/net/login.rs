@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::net::NetworkManager;
+use crate::{net::NetworkManager, utilities::get_ip};
 
 #[derive(Serialize, Debug)]
 #[allow(unused)]
@@ -33,17 +33,14 @@ impl NetworkManager {
             password: password,
         };
         let req_string: String = serde_json::to_string(&req_body)?;
-        // println!("{}", req_string);
         let res: reqwest::Response = self
             .client
-            .post("https://localhost:443/auth/login")
+            .post("https://".to_owned() + get_ip().as_str() + ":443/auth/login")
             .header("Content-Type", "application/json")
             .body(req_string.clone())
             .send()
             .await?;
         let status_code: reqwest::StatusCode = res.status();
-
-        // println!("{:?}", res);
 
         let mut res_obj: LoginRes;
         if status_code.as_u16() == 200 {

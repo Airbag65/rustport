@@ -36,3 +36,58 @@ pub fn save_pem_string(pem_string: &str) -> Result<(), Box<dyn std::error::Error
     fs::write(path, pem_string)?;
     Ok(())
 }
+
+pub fn save_local_auth(
+    name: &str,
+    surname: &str,
+    email: &str,
+    auth_token: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let user: UserInformation = UserInformation {
+        name: String::from(name),
+        surname: String::from(surname),
+        email: String::from(email),
+        auth_token: String::from(auth_token),
+    };
+
+    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+    path.push(".passport");
+    fs::create_dir_all(&path)?;
+    path.push("authentication.json");
+    fs::write(path, serde_json::to_string(&user)?)?;
+    Ok(())
+}
+
+#[allow(unused)]
+pub fn remove_local_auth() -> Result<(), Box<dyn std::error::Error>> {
+    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+    path.push(".passport");
+    fs::create_dir_all(&path)?;
+    path.push("authentication.json");
+    let empty_user: UserInformation = UserInformation {
+        name: String::new(),
+        surname: String::new(),
+        email: String::new(),
+        auth_token: String::new(),
+    };
+    fs::write(path, serde_json::to_string(&empty_user)?)?;
+    Ok(())
+}
+
+pub fn write_file(filename: &str, content: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+    path.push(".passport");
+    fs::create_dir_all(&path)?;
+    path.push(filename);
+    fs::write(path, content)?;
+    Ok(())
+}
+
+pub fn read_file(filename: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+    path.push(".passport");
+    fs::create_dir_all(&path)?;
+    path.push(filename);
+    let content: String = fs::read_to_string(path)?;
+    Ok(content.clone())
+}

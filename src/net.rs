@@ -1,4 +1,6 @@
 pub mod login;
+pub mod signup;
+pub mod singout;
 pub mod valid;
 
 #[derive(Clone)]
