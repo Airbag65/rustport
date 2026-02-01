@@ -1,10 +1,11 @@
 use std::{env, process::exit};
 
 use crate::cmd::{
-    init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
+    get::GetCommand, init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
     register::RegisterCommand, status::StatusCommand,
 };
 
+pub mod get;
 pub mod init;
 pub mod login;
 pub mod logout;
@@ -35,6 +36,22 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "signup" => return Some(Box::new(RegisterCommand)),
         "ls" => return Some(Box::new(LsCommand)),
         "list" => return Some(Box::new(LsCommand)),
-        _ => return None,
+        "get" => {
+            if argument.len() != 4 {
+                eprintln!("Too few arguments!\nUsage: rustport get [-h --host] <value>");
+                return None;
+            }
+            if argument[2] == "-h" || argument[2] == "--host" {
+                return Some(Box::new(GetCommand {
+                    value: argument[3].clone(),
+                }));
+            }
+            eprintln!("Invalid flag!\nUsage: rustport get [-h --host] <value>");
+            return None;
+        }
+        _ => {
+            eprintln!("rustport: Invalid argument");
+            return None;
+        }
     };
 }
