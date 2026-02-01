@@ -1,13 +1,14 @@
 use std::{env, process::exit};
 
 use crate::cmd::{
-    init::InitCommand, login::LoginCommand, logout::LogoutCommand, register::RegisterCommand,
-    status::StatusCommand,
+    init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
+    register::RegisterCommand, status::StatusCommand,
 };
 
 pub mod init;
 pub mod login;
 pub mod logout;
+pub mod ls;
 pub mod register;
 pub mod status;
 
@@ -31,6 +32,9 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "init" => return Some(Box::new(InitCommand)),
         "signout" => return Some(Box::new(LogoutCommand)),
         "register" => return Some(Box::new(RegisterCommand)),
+        "signup" => return Some(Box::new(RegisterCommand)),
+        "ls" => return Some(Box::new(LsCommand)),
+        "list" => return Some(Box::new(LsCommand)),
         _ => return None,
     };
 }

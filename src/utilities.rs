@@ -1,9 +1,16 @@
 use std::{
     fmt::Display,
     io::{self, Write},
+    process::exit,
 };
 
-use crate::utilities::file::read_file;
+use color_print::{ceprintln, cprintln};
+use tokio::{runtime::Handle, task::block_in_place};
+
+use crate::{
+    net::NetworkManager,
+    utilities::file::{get_local_information, read_file},
+};
 
 pub mod file;
 
@@ -22,4 +29,27 @@ pub fn get_ip() -> String {
         Err(_) => String::from("localhost"),
     };
     ip
+}
+
+pub fn ensure_auth() -> String {
+    block_in_place(move || {
+        Handle::current().block_on(async move {
+            let nm: NetworkManager = NetworkManager::new();
+            let token: String = match get_local_information() {
+                Ok(auth) => auth.auth_token,
+                Err(_) => {
+                    ceprintln!("<red>No local auth token found</>");
+                    exit(0)
+                }
+            };
+            let _ = match nm.validate_token(&token).await {
+                Ok(_) => return token,
+                Err(_) => {
+                    cprintln!("<red>You are not signed in to RUSTPORT!</>");
+                    cprintln!("<red>Run 'rustport login' to sign in</>");
+                    exit(0);
+                }
+            };
+        })
+    })
 }
