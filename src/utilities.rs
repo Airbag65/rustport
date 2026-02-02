@@ -53,3 +53,43 @@ pub fn ensure_auth() -> String {
         })
     })
 }
+
+pub fn print_boxed(content: &str) {
+    print!("+");
+    print!(
+        "{}",
+        std::iter::repeat("-")
+            .take(content.len())
+            .collect::<String>()
+    );
+    println!("+");
+    print!("|");
+    print!("{}", content);
+    println!("|");
+    print!("+");
+    print!(
+        "{}",
+        std::iter::repeat("-")
+            .take(content.len())
+            .collect::<String>()
+    );
+    println!("+");
+}
+
+pub fn confirmation_prompt(prompt: impl Display, default_yes: bool) -> bool {
+    print!("{prompt}");
+    let mut choice: String;
+    if default_yes {
+        choice = read_input(" [Y/n] ").unwrap().to_owned();
+    } else {
+        choice = read_input(" [y/N] ").unwrap().to_owned();
+    }
+    choice = choice.to_lowercase();
+    if choice == "y".to_owned() {
+        true
+    } else if choice != "n".to_owned() && default_yes {
+        true
+    } else {
+        false
+    }
+}

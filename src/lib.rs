@@ -32,7 +32,6 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let command = match cmd::get_command() {
         Some(cmd) => cmd,
         None => {
-            // println!("rustport: Invalid command");
             exit(0);
         }
     };

@@ -1,11 +1,13 @@
+alias r := run
+
 
 # Build RUSTPORT
 build:
     cargo build --release
 
 # Run RUSTPORT with given CMD
-run CMD="":
-    cargo run {{CMD}}
+run CMD="" FLAG="" VAL="":
+    cargo run {{CMD}} {{FLAG}} {{VAL}}
 
 # Clean project
 clean:
