@@ -15,6 +15,8 @@ pub struct LoginCommand;
 
 impl cmd::Command for LoginCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+        // Clear the terminal window ANSI escape code
+        print!("\x1B[2J\x1B[1;1H");
         let email = read_input("Email: ")?;
         let password = scanpw!("Password: ");
         println!();

@@ -1,10 +1,11 @@
 use std::{env, process::exit};
 
 use crate::cmd::{
-    get::GetCommand, init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
-    register::RegisterCommand, status::StatusCommand,
+    add::AddCommand, get::GetCommand, init::InitCommand, login::LoginCommand,
+    logout::LogoutCommand, ls::LsCommand, register::RegisterCommand, status::StatusCommand,
 };
 
+pub mod add;
 pub mod get;
 pub mod init;
 pub mod login;
@@ -49,6 +50,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             eprintln!("Invalid flag!\nUsage: rustport get [-h --host] <value>");
             return None;
         }
+        "add" => return Some(Box::new(AddCommand)),
         _ => {
             eprintln!("rustport: Invalid argument");
             return None;
