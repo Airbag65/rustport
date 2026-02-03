@@ -1,17 +1,20 @@
 use std::{env, process::exit};
 
 use crate::cmd::{
-    add::AddCommand, get::GetCommand, init::InitCommand, login::LoginCommand,
-    logout::LogoutCommand, ls::LsCommand, register::RegisterCommand, status::StatusCommand,
+    add::AddCommand, get::GetCommand, help::HelpCommand, init::InitCommand, login::LoginCommand,
+    logout::LogoutCommand, ls::LsCommand, register::RegisterCommand, rm::RemoveCommand,
+    status::StatusCommand,
 };
 
 pub mod add;
 pub mod get;
+pub mod help;
 pub mod init;
 pub mod login;
 pub mod logout;
 pub mod ls;
 pub mod register;
+pub mod rm;
 pub mod status;
 
 pub trait Command {
@@ -35,8 +38,8 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "signout" => return Some(Box::new(LogoutCommand)),
         "register" => return Some(Box::new(RegisterCommand)),
         "signup" => return Some(Box::new(RegisterCommand)),
-        "ls" => return Some(Box::new(LsCommand)),
-        "list" => return Some(Box::new(LsCommand)),
+        "ls" | "list" => return Some(Box::new(LsCommand)),
+        // "list" => return Some(Box::new(LsCommand)),
         "get" => {
             if argument.len() != 4 {
                 eprintln!("Too few arguments!\nUsage: rustport get [-h --host] <value>");
@@ -51,6 +54,20 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             return None;
         }
         "add" => return Some(Box::new(AddCommand)),
+        "help" => return Some(Box::new(HelpCommand)),
+        "rm" | "remove" => {
+            if argument.len() != 4 {
+                eprintln!("Too few arguments!\nUsage: rustport get [-h --host] <value>");
+                return None;
+            }
+            if argument[2] == "-h" || argument[2] == "--host" {
+                return Some(Box::new(RemoveCommand {
+                    value: argument[3].clone(),
+                }));
+            }
+            eprintln!("Invalid flag!\nUsage: rustport get [-h --host] <value>");
+            return None;
+        }
         _ => {
             eprintln!("rustport: Invalid argument");
             return None;

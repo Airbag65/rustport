@@ -1,9 +1,6 @@
 use serde::Deserialize;
 
-use crate::{
-    net::NetworkManager,
-    utilities::{ensure_auth, get_ip},
-};
+use crate::{net::NetworkManager, utilities::get_ip};
 
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
@@ -12,12 +9,11 @@ pub struct ListRes {
 }
 
 impl NetworkManager {
-    pub async fn list(&self) -> Result<ListRes, Box<dyn std::error::Error>> {
-        let token: String = ensure_auth();
+    pub async fn list(&self, token: &str) -> Result<ListRes, Box<dyn std::error::Error>> {
         let res: reqwest::Response = self
             .client
             .get("https://".to_owned() + get_ip().as_str() + ":443/pwd/getHosts")
-            .header("Authorization", "Bearer ".to_owned() + token.as_str())
+            .header("Authorization", "Bearer ".to_owned() + token)
             .send()
             .await
             .unwrap();

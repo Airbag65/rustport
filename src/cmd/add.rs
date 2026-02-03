@@ -42,7 +42,7 @@ impl Command for AddCommand {
                     password.chars().last().unwrap()
                 );
                 let nm: NetworkManager = NetworkManager::new();
-                if confirmation_prompt("Save password to PASSPORT?", true) {
+                if confirmation_prompt("Save password to RUSTPORT?", true) {
                     let status: u16 = match nm.add_password(&host_name, &password).await {
                         Ok(code) => code,
                         Err(_) => 500,

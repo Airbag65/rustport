@@ -47,12 +47,6 @@ impl NetworkManager {
             res_obj = serde_json::from_str(res.text().await.unwrap().as_str())?;
             Ok(res_obj)
         } else {
-            println!(
-                "something went wrong. status was: {}. body: {:?}. req_body: {}",
-                status_code.as_u16(),
-                res.text().await.unwrap(),
-                req_string
-            );
             Ok(LoginRes {
                 response_code: status_code.as_u16(),
                 response_message: String::new(),
