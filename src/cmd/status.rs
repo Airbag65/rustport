@@ -1,3 +1,5 @@
+use std::process::exit;
+
 use color_print::{ceprintln, cprintln};
 use tokio::{runtime::Handle, task::block_in_place};
 
@@ -21,9 +23,10 @@ impl cmd::Command for StatusCommand {
             Handle::current().block_on(async move {
                 let res: bool = match nm.validate_token(&local_info.auth_token).await {
                     Ok(v) => v,
-                    Err(e) => {
-                        ceprintln!("<red>Something went wrong:</> {:?}", e);
-                        return;
+                    Err(_) => {
+                        ceprintln!("<red>Could not connect to server</>");
+                        println!("Using IP: {}", get_ip());
+                        exit(0);
                     }
                 };
                 if res {
@@ -36,6 +39,7 @@ impl cmd::Command for StatusCommand {
                 } else {
                     cprintln!("<red>You are not signed in to RUSTPORT!</>");
                     cprintln!("<red>Run 'rustport login' to sign in</>");
+                    println!("Using IP: {}", get_ip());
                 }
             })
         });
