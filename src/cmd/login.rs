@@ -58,16 +58,8 @@ impl cmd::Command for LoginCommand {
                                     res.surname
                                 );
                             }
-                            Err(e) => eprintln!("Error {:?}", e),
+                            Err(_) => eprintln!("Something went wrong!"),
                         };
-                        // todo!("Save LOCAL AUTH");
-
-                        // let _ = match save_local_auth(
-                        //     &res.name,
-                        //     &res.surname,
-                        //     &res.email,
-                        //     &res.auth_token,
-                        // ) {};
                     }
                     404 => cprintln!("<yellow>Account with email '{}' does not exist</>", &email),
                     418 => cprintln!("<yellow>Already logged in with email '{}'</>", &email),

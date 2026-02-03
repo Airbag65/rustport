@@ -29,9 +29,7 @@ impl Command for RegisterCommand {
         let mut confirm_password: String;
         loop {
             password = scanpw!("Password: ");
-            println!();
             confirm_password = scanpw!("Confirm password: ");
-            println!();
             if password == confirm_password {
                 break;
             }
