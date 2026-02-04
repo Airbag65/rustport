@@ -26,7 +26,7 @@ impl Command for GetCommand {
                 let token = ensure_auth();
                 let possible_hosts = nm.list(&token).await.unwrap();
                 if !possible_hosts.hosts.iter().any(|host| self.value.contains(host)) {
-                    cprintln!("<red>No password for '{}' found", self.value);
+                    cprintln!("<red>No password for '{}' found</>", self.value);
                     exit(0);
                 }
                 let password: String = nm.get(self.value.clone()).await.unwrap_or("".to_owned());

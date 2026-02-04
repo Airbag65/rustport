@@ -39,7 +39,6 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "register" => return Some(Box::new(RegisterCommand)),
         "signup" => return Some(Box::new(RegisterCommand)),
         "ls" | "list" => return Some(Box::new(LsCommand)),
-        // "list" => return Some(Box::new(LsCommand)),
         "get" => {
             if argument.len() != 4 {
                 eprintln!("Too few arguments!\nUsage: rustport get [-h --host] <value>");
