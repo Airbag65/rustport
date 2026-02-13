@@ -1,4 +1,5 @@
 alias r := run
+alias i := install
 
 
 # Build RUSTPORT
@@ -15,7 +16,9 @@ clean:
 
 # Build and install binary
 install: build
-    @cp ./target/release/rustport ~/.cargo/bin/rustport
+    @cp ./target/release/rp ~/.cargo/bin/rp
+    @cp ./target/release/rp ~/.cargo/bin/rustport
     @cp ./assets/rustport_title.txt ~/.passport/rustport_title.txt
-    @echo "RUSTPORT has been installed."
+    @echo
+    @echo "RUSTPORT ( Binary: [rustport | rp] ) has been installed."
     @echo "Make sure to have ~/.cargo/bin in your PATH in order to use RUSTPORT"

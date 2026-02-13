@@ -1275,6 +1275,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "rp"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "color-print",
+ "openssl",
+ "rand 0.8.5",
+ "reqwest",
+ "rsa",
+ "rsa_ext",
+ "scanpw",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tokio",
+]
+
+[[package]]
 name = "rsa"
 version = "0.9.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1393,24 +1411,6 @@ dependencies = [
  "ring",
  "rustls-pki-types",
  "untrusted",
-]
-
-[[package]]
-name = "rustport"
-version = "0.1.0"
-dependencies = [
- "base64",
- "color-print",
- "openssl",
- "rand 0.8.5",
- "reqwest",
- "rsa",
- "rsa_ext",
- "scanpw",
- "serde",
- "serde_json",
- "sha2",
- "tokio",
 ]
 
 [[package]]

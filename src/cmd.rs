@@ -1,12 +1,15 @@
 use std::{env, process::exit};
 
+use color_print::cprintln;
+
 use crate::cmd::{
-    add::AddCommand, get::GetCommand, help::HelpCommand, init::InitCommand, login::LoginCommand,
-    logout::LogoutCommand, ls::LsCommand, register::RegisterCommand, rm::RemoveCommand,
-    status::StatusCommand,
+    add::AddCommand, generate::GenerateCommand, get::GetCommand, help::HelpCommand,
+    init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
+    register::RegisterCommand, rm::RemoveCommand, status::StatusCommand,
 };
 
 pub mod add;
+pub mod generate;
 pub mod get;
 pub mod help;
 pub mod init;
@@ -27,6 +30,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         .collect::<Vec<String>>();
     if argument.len() < 2 {
         println!("Usage: rustport <command>");
+        cprintln!("<yellow>Run 'rustport help' for further instructions</>");
         exit(0);
     }
     let command_string = String::from(argument[1].clone());
@@ -53,7 +57,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             return None;
         }
         "add" => return Some(Box::new(AddCommand)),
-        "help" => return Some(Box::new(HelpCommand)),
+        "help" | "h" => return Some(Box::new(HelpCommand)),
         "rm" | "remove" => {
             if argument.len() != 4 {
                 eprintln!("Too few arguments!\nUsage: rustport rm [-h --host] <value>");
@@ -67,6 +71,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             eprintln!("Invalid flag!\nUsage: rustport rm [-h --host] <value>");
             return None;
         }
+        "generate" | "gen" => return Some(Box::new(GenerateCommand)),
         _ => {
             eprintln!("rustport: Invalid argument");
             return None;

@@ -1,5 +1,5 @@
 [package]
-name = "rustport"
+name = "rp"
 version = "0.1.0"
 edition = "2024"
 
