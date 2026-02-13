@@ -5,6 +5,7 @@ use std::{
 };
 
 use color_print::{ceprintln, cprintln};
+use rand::Rng;
 use tokio::{runtime::Handle, task::block_in_place};
 
 use crate::{
@@ -92,4 +93,38 @@ pub fn confirmation_prompt(prompt: impl Display, default_yes: bool) -> bool {
     } else {
         false
     }
+}
+
+fn select_char(string: String) -> char {
+    let index = rand::thread_rng().gen_range(0..string.len());
+    match string.chars().nth(index) {
+        Some(v) => v,
+        None => {
+            ceprintln!("<red>Something went wrong</>");
+            exit(0);
+        }
+    }
+}
+
+pub fn generate_password() -> String {
+    let len = 20;
+    let alpha = "abcdefghijklmnopqrstuvwxyz";
+    #[allow(unused)]
+    let nums = "0123456789";
+    let special_chars = "?-=+@$&";
+    let mut result = "".to_owned();
+    loop {
+        if result.len() == len {
+            break;
+        }
+        let num = rand::thread_rng().gen_range(0..=3);
+        match num {
+            0 => result += String::from(select_char(String::from(alpha))).as_str(),
+            1 => result += String::from(select_char(String::from(alpha.to_uppercase()))).as_str(),
+            2 => result += String::from(select_char(num.to_string())).as_str(),
+            3 => result += String::from(select_char(String::from(special_chars))).as_str(),
+            _ => {}
+        }
+    }
+    String::from(result)
 }
