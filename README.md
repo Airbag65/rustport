@@ -10,3 +10,6 @@ If you have no intentions of expanding upon `rustport` and just simply wish to u
  # or use the shorthand
  just i
 ```
+
+## Demo
+![demo](./demo.gif)
