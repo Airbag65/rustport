@@ -36,6 +36,11 @@ impl Command for HelpCommand {
         );
         println!(
             "{:<30} {}",
+            " generate", "Generate a pseudo-random 20 characters long password"
+        );
+        println!("{:<30} {}", " gen", "Shorthand for 'generate'");
+        println!(
+            "{:<30} {}",
             " help", "Lists all possible commands and their usage"
         );
         println!("{:<30} {}", " h", "Shorthand for 'help'");
