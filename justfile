@@ -18,6 +18,10 @@ clean:
 install: build
     @cp ./target/release/rp ~/.cargo/bin/rp
     @cp ./target/release/rp ~/.cargo/bin/rustport
+    @mkdir -p ~/.passport
+    @touch ~/.passport/authentication.json
+    @touch ~/.passport/publicKey.pem
+    @echo '{"auth_token":"","name":"","surname":"","email":""}' > ~/.passport/authentication.json
     @cp ./assets/rustport_title.txt ~/.passport/rustport_title.txt
     @echo
     @echo "RUSTPORT ( Binary: [rustport | rp] ) has been installed."
