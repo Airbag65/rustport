@@ -1,3 +1,6 @@
+use core::time;
+use std::{io::Write, thread::sleep};
+
 use color_print::cprintln;
 use scanpw::scanpw;
 use tokio::{runtime::Handle, task::block_in_place};
@@ -5,7 +8,7 @@ use tokio::{runtime::Handle, task::block_in_place};
 use crate::{
     cmd::Command,
     net::NetworkManager,
-    utilities::{confirmation_prompt, print_boxed, read_input},
+    utilities::{confirmation_prompt, generate_password, print_boxed, read_input},
 };
 
 pub struct AddCommand;
@@ -15,15 +18,39 @@ impl Command for AddCommand {
         // Clear the terminal window ANSI escape code
         print!("\x1B[2J\x1B[1;1H");
         let host_name: String = read_input("Enter hostname: ")?;
+        let gen_password: bool = confirmation_prompt(
+            "Would you like to generate a password instead of typing?",
+            false,
+        );
         let mut password: String;
         let mut confirm_password: String;
-        loop {
-            password = scanpw!("Password: ");
-            confirm_password = scanpw!("Confirm password: ");
-            if password == confirm_password {
-                break;
+        if !gen_password {
+            loop {
+                password = scanpw!("Password: ");
+                confirm_password = scanpw!("Confirm password: ");
+                if password == confirm_password {
+                    break;
+                }
+                cprintln!("<red>Passwords don't match!</>");
             }
-            cprintln!("<red>Passwords don't match!</>");
+        } else {
+            password = generate_password();
+            print!("Password: ");
+            let _ = std::io::stdout().flush().unwrap();
+            for _ in 0..password.len() {
+                print!("*");
+                let _ = std::io::stdout().flush().unwrap();
+                sleep(time::Duration::from_millis(20));
+            }
+            println!();
+            print!("Confirm password: ");
+            let _ = std::io::stdout().flush().unwrap();
+            for _ in 0..password.len() {
+                print!("*");
+                let _ = std::io::stdout().flush().unwrap();
+                sleep(time::Duration::from_millis(20));
+            }
+            println!();
         }
         if confirmation_prompt("Would you like to display the password?", false) {
             print_boxed(&password);
