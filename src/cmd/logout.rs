@@ -27,6 +27,7 @@ impl Command for LogoutCommand {
                         cprintln!("<green>You are now signed out</>");
                     }
                     304 => cprintln!("<yellow>You were already signed out</>"),
+                    404 => cprintln!("<yellow>The local user does no longer exist in RUSTPORT</>"),
                     _ => {}
                 }
             })

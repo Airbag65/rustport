@@ -22,6 +22,12 @@ impl NetworkManager {
     #[allow(unused)]
     pub async fn sign_out(&self) -> Result<SignOutRes, Box<dyn std::error::Error>> {
         let email: String = get_local_information()?.email;
+        if email == "".to_string() {
+            return Ok(SignOutRes {
+                response_code: 304,
+                response_message: String::from("No local auth"),
+            });
+        }
         let req: SignOutReq = SignOutReq { email };
         let req_string: String = serde_json::to_string(&req)?;
         let res: reqwest::Response = self
@@ -32,6 +38,12 @@ impl NetworkManager {
             .send()
             .await?;
         let status_code: reqwest::StatusCode = res.status();
+        if status_code != 200 || status_code != 304 {
+            return Ok(SignOutRes {
+                response_code: status_code.as_u16(),
+                response_message: "error".to_string(),
+            });
+        }
         let sign_out_res: SignOutRes = serde_json::from_str(res.text().await.unwrap().as_str())?;
         Ok(sign_out_res)
     }
