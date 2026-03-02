@@ -8,42 +8,46 @@ impl Command for HelpCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
         let title = read_file("rustport_title.txt")?;
         cprintln!("<rgb(211, 69, 22)>{}</>", title);
-        println!("Usage: rustport <command> [help] [<value>]");
+        println!("Usage: rustport <command> [flag] [<value>]");
         println!("COMMANDS:");
         println!("{:<30} {}", " init", "Choose IP address to target");
-        println!("{:<30} {}", " status", "Check login status");
-        println!("{:<30} {}", " st", "Shorthand for 'status'");
+        cprintln!(
+            "{:<30} {} <i><c>#alias: st</></>",
+            " status",
+            "Check login status"
+        );
         println!("{:<30} {}", " login", "Login to rustport");
-        println!("{:<30} {}", " signout", "Sign out from rustport");
+        cprintln!(
+            "{:<30} {} <i><c>#alias: so</></>",
+            " signout",
+            "Sign out from rustport"
+        );
         println!("{:<30} {}", " register", "Sign up new user to rustport");
         println!("{:<30} {}", " add", "Add a new password");
         println!(
             "{:<30} {}",
             " get [-h --host] <hostname>", "Retrieve the password for the specified hostname"
         );
-        println!(
-            "{:<30} {}",
-            " list", "List all the hosts you have registered passwords for"
+        cprintln!(
+            "{:<30} {} <i><c>#alias: ls</></>",
+            " list",
+            "List all the hosts you have registered passwords for"
         );
-        println!("{:<30} {}", " ls", "Shorthand for 'list'");
-        println!(
-            "{:<30} {}",
-            " remove [-h --host] <hostname>", "Remove the password for the specified hostname"
+        cprintln!(
+            "{:<30} {} <i><c>#alias: rm</></>",
+            " remove [-h --host] <hostname>",
+            "Remove the password for the specified hostname"
         );
-        println!(
-            "{:<30} {}",
-            " rm [-h --host] <hostname>", "Shorthand for 'remove'"
+        cprintln!(
+            "{:<30} {} <i><c>#alias: gen</></>",
+            " generate",
+            "Generate a pseudo-random 20 characters long password"
         );
-        println!(
-            "{:<30} {}",
-            " generate", "Generate a pseudo-random 20 characters long password"
+        cprintln!(
+            "{:<30} {} <i><c>#alias: h</></>",
+            " help",
+            "Lists all possible commands and their usage"
         );
-        println!("{:<30} {}", " gen", "Shorthand for 'generate'");
-        println!(
-            "{:<30} {}",
-            " help", "Lists all possible commands and their usage"
-        );
-        println!("{:<30} {}", " h", "Shorthand for 'help'");
 
         Ok(())
     }

@@ -39,7 +39,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "st" => return Some(Box::new(StatusCommand)),
         "login" => return Some(Box::new(LoginCommand)),
         "init" => return Some(Box::new(InitCommand)),
-        "signout" => return Some(Box::new(LogoutCommand)),
+        "signout" | "so" => return Some(Box::new(LogoutCommand)),
         "register" => return Some(Box::new(RegisterCommand)),
         "signup" => return Some(Box::new(RegisterCommand)),
         "ls" | "list" => return Some(Box::new(LsCommand)),
