@@ -1,7 +1,7 @@
 Output demo.gif
 
 Set FontSize 16
-Set Width 1100
+Set Width 1200
 Set Height 700
 Set Margin 10
 Set MarginFill "#d34516"
