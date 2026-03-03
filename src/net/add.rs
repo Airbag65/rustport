@@ -24,7 +24,6 @@ impl NetworkManager {
     ) -> Result<u16, Box<dyn std::error::Error>> {
         let token: String = ensure_auth();
 
-        // TODO: RSA encryption -> BASE64 String
         let mut rng = thread_rng();
         let pem_string = read_file("publicKey.pem").unwrap();
         let key = RsaPublicKey::from_pkcs1_pem(&pem_string)?;
