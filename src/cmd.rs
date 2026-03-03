@@ -3,12 +3,14 @@ use std::{env, process::exit};
 use color_print::cprintln;
 
 use crate::cmd::{
-    add::AddCommand, generate::GenerateCommand, get::GetCommand, help::HelpCommand,
-    init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
-    register::RegisterCommand, rm::RemoveCommand, status::StatusCommand, version::VersionCommand,
+    add::AddCommand, edit::EditCommand, generate::GenerateCommand, get::GetCommand,
+    help::HelpCommand, init::InitCommand, login::LoginCommand, logout::LogoutCommand,
+    ls::LsCommand, register::RegisterCommand, rm::RemoveCommand, status::StatusCommand,
+    version::VersionCommand,
 };
 
 pub mod add;
+pub mod edit;
 pub mod generate;
 pub mod get;
 pub mod help;
@@ -70,6 +72,19 @@ pub fn get_command() -> Option<Box<dyn Command>> {
                 }));
             }
             eprintln!("Invalid flag!\nUsage: rustport rm [-h --host] <value>");
+            return None;
+        }
+        "edit" => {
+            if argument.len() != 4 {
+                eprintln!("Too few arguments!\nUsage: rustport rm [-h --host] <value>");
+                return None;
+            }
+            if argument[2] == "-h" || argument[2] == "--host" {
+                return Some(Box::new(EditCommand {
+                    value: argument[3].clone(),
+                }));
+            }
+            eprintln!("Invalid flag!\nUsage: rustport edit [-h --host] <value>");
             return None;
         }
         "generate" | "gen" => return Some(Box::new(GenerateCommand)),

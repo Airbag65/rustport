@@ -6,6 +6,12 @@ Set Height 700
 Set Margin 10
 Set MarginFill "#d34516"
 
+Type "rustport"
+Sleep 500ms
+Enter
+
+Sleep 5s
+
 Type "rustport help"
 Sleep 500ms
 Enter
