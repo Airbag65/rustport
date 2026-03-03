@@ -43,6 +43,10 @@ impl Command for HelpCommand {
             " generate",
             "Generate a pseudo-random 20 characters long password"
         );
+        println!(
+            "{:<30} {}",
+            " edit [-h --host] <hostname>", "Edit the password for the specified hostname"
+        );
         println!();
         cprintln!(
             "{:<30} {} <i><c>#alias: h</></>",
