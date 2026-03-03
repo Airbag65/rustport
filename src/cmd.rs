@@ -63,7 +63,10 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "help" | "h" => return Some(Box::new(HelpCommand)),
         "rm" | "remove" => {
             if argument.len() != 4 {
-                eprintln!("Too few arguments!\nUsage: rustport rm [-h --host] <value>");
+                eprintln!(
+                    "Too few arguments!\nUsage: rustport {} [-h --host] <value>",
+                    argument[1]
+                );
                 return None;
             }
             if argument[2] == "-h" || argument[2] == "--host" {
@@ -71,12 +74,15 @@ pub fn get_command() -> Option<Box<dyn Command>> {
                     value: argument[3].clone(),
                 }));
             }
-            eprintln!("Invalid flag!\nUsage: rustport rm [-h --host] <value>");
+            eprintln!(
+                "Invalid flag!\nUsage: rustport {} [-h --host] <value>",
+                argument[1]
+            );
             return None;
         }
         "edit" => {
             if argument.len() != 4 {
-                eprintln!("Too few arguments!\nUsage: rustport rm [-h --host] <value>");
+                eprintln!("Too few arguments!\nUsage: rustport edit [-h --host] <value>");
                 return None;
             }
             if argument[2] == "-h" || argument[2] == "--host" {
