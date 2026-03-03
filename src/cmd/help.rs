@@ -43,10 +43,16 @@ impl Command for HelpCommand {
             " generate",
             "Generate a pseudo-random 20 characters long password"
         );
+        println!();
         cprintln!(
             "{:<30} {} <i><c>#alias: h</></>",
             " help",
             "Lists all possible commands and their usage"
+        );
+        cprintln!(
+            "{:<30} {} <i><c>#alias: v</></>",
+            " version",
+            "Show the installed RUSTPORT version"
         );
 
         Ok(())

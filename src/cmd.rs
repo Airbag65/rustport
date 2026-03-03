@@ -5,7 +5,7 @@ use color_print::cprintln;
 use crate::cmd::{
     add::AddCommand, generate::GenerateCommand, get::GetCommand, help::HelpCommand,
     init::InitCommand, login::LoginCommand, logout::LogoutCommand, ls::LsCommand,
-    register::RegisterCommand, rm::RemoveCommand, status::StatusCommand,
+    register::RegisterCommand, rm::RemoveCommand, status::StatusCommand, version::VersionCommand,
 };
 
 pub mod add;
@@ -19,6 +19,7 @@ pub mod ls;
 pub mod register;
 pub mod rm;
 pub mod status;
+pub mod version;
 
 pub trait Command {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>>;
@@ -72,6 +73,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             return None;
         }
         "generate" | "gen" => return Some(Box::new(GenerateCommand)),
+        "version" | "v" => return Some(Box::new(VersionCommand)),
         _ => {
             eprintln!("rustport: Invalid argument");
             return None;
