@@ -106,6 +106,11 @@ fn select_char(string: String) -> char {
     }
 }
 
+fn select_random_digit() -> String {
+    let number = rand::thread_rng().gen_range(0..=9);
+    number.to_string()
+}
+
 pub fn generate_password() -> String {
     let len = 20;
     let alpha = "abcdefghijklmnopqrstuvwxyz";
@@ -121,7 +126,7 @@ pub fn generate_password() -> String {
         match num {
             0 => result += String::from(select_char(String::from(alpha))).as_str(),
             1 => result += String::from(select_char(String::from(alpha.to_uppercase()))).as_str(),
-            2 => result += String::from(select_char(num.to_string())).as_str(),
+            2 => result += String::from(select_random_digit()).as_str(),
             3 => result += String::from(select_char(String::from(special_chars))).as_str(),
             _ => {}
         }
