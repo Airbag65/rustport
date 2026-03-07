@@ -47,6 +47,11 @@ impl Command for HelpCommand {
             "{:<30} {}",
             " edit [-h --host] <hostname>", "Edit the password for the specified hostname"
         );
+        cprintln!(
+            "{:<30} {} <i><c>#alias: rsacc</></>",
+            " reset_acc",
+            "Send an account-reset-request to server"
+        );
         println!();
         cprintln!(
             "{:<30} {} <i><c>#alias: h</></>",
