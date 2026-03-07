@@ -5,8 +5,8 @@ use color_print::cprintln;
 use crate::cmd::{
     add::AddCommand, edit::EditCommand, generate::GenerateCommand, get::GetCommand,
     help::HelpCommand, init::InitCommand, login::LoginCommand, logout::LogoutCommand,
-    ls::LsCommand, register::RegisterCommand, rm::RemoveCommand, status::StatusCommand,
-    version::VersionCommand,
+    ls::LsCommand, register::RegisterCommand, rm::RemoveCommand, rsacc::ResetAccountCommand,
+    status::StatusCommand, version::VersionCommand,
 };
 
 pub mod add;
@@ -20,6 +20,7 @@ pub mod logout;
 pub mod ls;
 pub mod register;
 pub mod rm;
+pub mod rsacc;
 pub mod status;
 pub mod version;
 
@@ -93,6 +94,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             eprintln!("Invalid flag!\nUsage: rustport edit [-h --host] <value>");
             return None;
         }
+        "rsacc" | "reset_acc" => return Some(Box::new(ResetAccountCommand)),
         "generate" | "gen" => return Some(Box::new(GenerateCommand)),
         "version" | "v" => return Some(Box::new(VersionCommand)),
         _ => {

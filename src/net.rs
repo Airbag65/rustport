@@ -4,6 +4,7 @@ pub mod get;
 pub mod list;
 pub mod login;
 pub mod remove;
+pub mod reset;
 pub mod signup;
 pub mod singout;
 pub mod valid;
