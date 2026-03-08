@@ -133,3 +133,24 @@ pub fn generate_password() -> String {
     }
     String::from(result)
 }
+
+fn capitalize(s: &str) -> String {
+    let mut c = s.chars();
+    match c.next() {
+        None => String::new(),
+        Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
+    }
+}
+
+pub fn convert_host(host_name: String) -> String {
+    let string_parts = host_name.split("_");
+    let mut result: String = String::new();
+    let len = string_parts.clone().count();
+    for (i, part) in string_parts.enumerate() {
+        result += capitalize(&part).as_str();
+        if i != len - 1 {
+            result += " ";
+        }
+    }
+    result
+}

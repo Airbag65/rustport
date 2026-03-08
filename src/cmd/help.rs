@@ -16,13 +16,21 @@ impl Command for HelpCommand {
             " status",
             "Check login status"
         );
-        println!("{:<30} {}", " login", "Login to rustport");
+        cprintln!(
+            "{:<30} {} <i><c>#alias: lo</></>",
+            " login",
+            "Login to rustport"
+        );
         cprintln!(
             "{:<30} {} <i><c>#alias: so</></>",
             " signout",
             "Sign out from rustport"
         );
-        println!("{:<30} {}", " register", "Sign up new user to rustport");
+        cprintln!(
+            "{:<30} {} <i><c>#alias: reg</></>",
+            " register",
+            "Sign up new user to rustport"
+        );
         println!("{:<30} {}", " add", "Add a new password");
         println!(
             "{:<30} {}",
@@ -49,7 +57,7 @@ impl Command for HelpCommand {
         );
         cprintln!(
             "{:<30} {} <i><c>#alias: rsacc</></>",
-            " reset_acc",
+            " reset_account",
             "Send an account-reset-request to server"
         );
         println!();

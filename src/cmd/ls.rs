@@ -1,12 +1,12 @@
 use std::process::exit;
 
-use color_print::ceprintln;
+use color_print::{ceprintln, cprintln};
 use tokio::{runtime::Handle, task::block_in_place};
 
 use crate::{
     cmd::Command,
     net::{NetworkManager, list::ListRes},
-    utilities::ensure_auth,
+    utilities::{convert_host, ensure_auth},
 };
 
 pub struct LsCommand;
@@ -26,7 +26,8 @@ impl Command for LsCommand {
                     }
                 };
                 for host in res.hosts {
-                    println!("{host}");
+                    let converted: String = convert_host(host.clone());
+                    cprintln!("{} <i><c>use: {}</></>", converted, host);
                 }
             })
         });

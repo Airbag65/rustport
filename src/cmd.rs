@@ -39,12 +39,11 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     }
     let command_string = String::from(argument[1].clone());
     match command_string.as_str() {
-        "status" => return Some(Box::new(StatusCommand)),
-        "st" => return Some(Box::new(StatusCommand)),
-        "login" => return Some(Box::new(LoginCommand)),
+        "status" | "st" => return Some(Box::new(StatusCommand)),
+        "login" | "lo" => return Some(Box::new(LoginCommand)),
         "init" => return Some(Box::new(InitCommand)),
         "signout" | "so" => return Some(Box::new(LogoutCommand)),
-        "register" => return Some(Box::new(RegisterCommand)),
+        "register" | "reg" => return Some(Box::new(RegisterCommand)),
         "signup" => return Some(Box::new(RegisterCommand)),
         "ls" | "list" => return Some(Box::new(LsCommand)),
         "get" => {
@@ -94,7 +93,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             eprintln!("Invalid flag!\nUsage: rustport edit [-h --host] <value>");
             return None;
         }
-        "rsacc" | "reset_acc" => return Some(Box::new(ResetAccountCommand)),
+        "rsacc" | "reset_account" => return Some(Box::new(ResetAccountCommand)),
         "generate" | "gen" => return Some(Box::new(GenerateCommand)),
         "version" | "v" => return Some(Box::new(VersionCommand)),
         _ => {
