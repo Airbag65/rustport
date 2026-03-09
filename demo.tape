@@ -30,7 +30,7 @@ Enter
 
 Sleep 5s
 
-Type "rustport get --host test"
+Type "rustport get --host test_host"
 Sleep 1000ms
 Enter
 
