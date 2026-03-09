@@ -4,6 +4,7 @@ use std::{
     thread, time,
 };
 
+use arboard::Clipboard;
 use color_print::cprintln;
 use tokio::{runtime::Handle, task::block_in_place};
 
@@ -21,6 +22,7 @@ pub struct GetCommand {
 impl Command for GetCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
         let nm: NetworkManager = NetworkManager::new();
+        let mut cb: Clipboard = Clipboard::new().unwrap();
         block_in_place(move || {
             Handle::current().block_on(async move {
                 let token = ensure_auth();
@@ -34,6 +36,15 @@ impl Command for GetCommand {
                 cprintln!("<red>WARNING! Be careful when revealing the password. The password will be printed to the terminal window</>");
                 if confirmation_prompt("Would you like to display the password?", false) {
                     print_boxed(&password);
+                } else if confirmation_prompt("Would you like to copy password to clipboard", true) {
+                    match cb.set_text(password) {
+                        Ok(_) => {
+                            cprintln!("<green>Copied to clipboard</>");
+                        },
+                        Err(_) => {
+                            cprintln!("<red>Failed to copy to clipboard</>");
+                        }
+                    };
                 }
                 println!("Terminal window clearing in ");
                 let _ = io::stdout().flush();
