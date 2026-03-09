@@ -27,7 +27,7 @@ impl Command for LsCommand {
                 };
                 for host in res.hosts {
                     let converted: String = convert_host(host.clone());
-                    cprintln!("{} <i><c>use: {}</></>", converted, host);
+                    cprintln!("{} <i><rgb(200, 200, 200)>use: {}</></>", converted, host);
                 }
             })
         });

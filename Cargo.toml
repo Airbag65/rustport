@@ -1,6 +1,6 @@
 [package]
 name = "rp"
-version = "1.2.4"
+version = "1.2.5"
 edition = "2024"
 
 [dependencies]
@@ -8,6 +8,7 @@ base64 = "0.22.1"
 color-print = "0.3.7"
 openssl = "0.10.75"
 rand = "0.8"
+regex = "1.12.3"
 reqwest = {version = "0.13.1"}
 rsa = "0.9.10"
 rsa_ext = "0.1.2"

@@ -6,6 +6,7 @@ use std::{
 
 use color_print::{ceprintln, cprintln};
 use rand::Rng;
+use regex::Regex;
 use tokio::{runtime::Handle, task::block_in_place};
 
 use crate::{
@@ -142,7 +143,7 @@ fn capitalize(s: &str) -> String {
     }
 }
 
-pub fn convert_host(host_name: String) -> String {
+fn convert_snake_case(host_name: String) -> String {
     let string_parts = host_name.split("_");
     let mut result: String = String::new();
     let len = string_parts.clone().count();
@@ -153,4 +154,30 @@ pub fn convert_host(host_name: String) -> String {
         }
     }
     result
+}
+
+fn convert_camel_case(host_name: String) -> String {
+    capitalize(&host_name)
+}
+
+pub fn convert_host(host_name: String) -> String {
+    let snake_re = Regex::new("^[a-z0-9]+(_[a-z0-9]+)*$").unwrap();
+    let is_snake: bool = match snake_re.captures(&host_name) {
+        Some(_) => true,
+        None => false,
+    };
+
+    if is_snake {
+        return convert_snake_case(String::from(host_name));
+    }
+    let camel_re = Regex::new("^[a-z]+([A-Z][a-z0-9]*)+$").unwrap();
+    let is_camel: bool = match camel_re.captures(&host_name) {
+        Some(_) => true,
+        None => false,
+    };
+
+    if is_camel {
+        return convert_camel_case(String::from(host_name));
+    }
+    capitalize(&host_name)
 }
