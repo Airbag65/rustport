@@ -47,7 +47,7 @@ pub fn ensure_auth() -> String {
             let _ = match nm.validate_token(&token).await {
                 Ok(_) => return token,
                 Err(_) => {
-                    cprintln!("<red>You are not signed in to RUSTPORT!</>");
+                    cprintln!("<red>You are not signed in to rustport!</>");
                     cprintln!("<red>Run 'rustport login' to sign in</>");
                     exit(0);
                 }
@@ -157,7 +157,17 @@ fn convert_snake_case(host_name: String) -> String {
 }
 
 fn convert_camel_case(host_name: String) -> String {
-    capitalize(&host_name)
+    let result: String = host_name
+        .chars()
+        .flat_map(|c| {
+            if c.is_uppercase() {
+                vec![' ', c]
+            } else {
+                vec![c]
+            }
+        })
+        .collect();
+    capitalize(&result)
 }
 
 pub fn convert_host(host_name: String) -> String {

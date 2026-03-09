@@ -69,7 +69,7 @@ impl Command for HelpCommand {
         cprintln!(
             "{:<30} {} <i><c>#alias: v</></>",
             " version",
-            "Show the installed RUSTPORT version"
+            "Show the installed rustport version"
         );
 
         Ok(())
