@@ -1,6 +1,7 @@
 pub mod add;
 pub mod edit;
 pub mod get;
+pub mod health;
 pub mod list;
 pub mod login;
 pub mod remove;

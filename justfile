@@ -3,7 +3,7 @@ alias i := install
 
 
 # Build RUSTPORT
-build: clean
+build:
     cargo build --release
 
 # Run RUSTPORT with given CMD
@@ -15,7 +15,7 @@ clean:
     cargo clean
 
 # Build and install binary
-install: build
+install: clean build
     @cp ./target/release/rp ~/.cargo/bin/rp
     @cp ./target/release/rp ~/.cargo/bin/rustport
     @mkdir -p ~/.passport

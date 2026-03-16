@@ -3,7 +3,6 @@ use serde::Deserialize;
 use crate::{net::NetworkManager, utilities::get_ip};
 
 #[derive(Deserialize, Debug)]
-#[allow(unused)]
 pub struct ListRes {
     pub hosts: Vec<String>,
 }
