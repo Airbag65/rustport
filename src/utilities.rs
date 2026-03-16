@@ -10,8 +10,9 @@ use regex::Regex;
 use tokio::{runtime::Handle, task::block_in_place};
 
 use crate::{
+    Config,
     net::NetworkManager,
-    utilities::file::{get_local_information, read_file},
+    utilities::file::{get_configuration, get_local_information},
 };
 
 pub mod file;
@@ -26,11 +27,11 @@ pub fn read_input(prompt: impl Display) -> Result<String, Box<dyn std::error::Er
 }
 
 pub fn get_ip() -> String {
-    let ip: String = match read_file("PASSPORT_IP") {
-        Ok(ip) => ip,
-        Err(_) => String::from("localhost"),
+    let config: Config = match get_configuration() {
+        Ok(c) => c,
+        Err(_) => exit(0),
     };
-    ip
+    config.global.ip_addr
 }
 
 pub fn ensure_auth() -> String {

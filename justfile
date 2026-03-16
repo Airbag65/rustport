@@ -3,7 +3,7 @@ alias i := install
 
 
 # Build RUSTPORT
-build:
+build: clean
     cargo build --release
 
 # Run RUSTPORT with given CMD
@@ -21,8 +21,19 @@ install: build
     @mkdir -p ~/.passport
     @touch ~/.passport/authentication.json
     @touch ~/.passport/publicKey.pem
+    @echo "" > ~/.passport/config.toml
+    @echo "[global]" >> ~/.passport/config.toml
+    @echo "source_path = \"$(pwd)\"" >> ~/.passport/config.toml
+    @echo "ip_addr = \"127.0.0.1\"" >> ~/.passport/config.toml
     @echo '{"auth_token":"","name":"","surname":"","email":""}' > ~/.passport/authentication.json
     @cp ./assets/rustport_title.txt ~/.passport/rustport_title.txt
     @echo
     @echo "RUSTPORT ( Binary: [rustport | rp] ) has been installed."
     @echo "Make sure to have ~/.cargo/bin in your PATH in order to use RUSTPORT"
+
+# Update rustport
+update: build
+    @cp ./target/release/rp ~/.cargo/bin/rp
+    @cp ./target/release/rp ~/.cargo/bin/rustport
+    @echo
+    @echo "RUSTPORT ( Binary: [rustport | rp] ) has been updated."

@@ -3,9 +3,6 @@ use std::process::exit;
 
 use serde::{Deserialize, Serialize};
 
-#[allow(unused_imports)]
-use crate::net::NetworkManager;
-
 mod cmd;
 mod net;
 mod utilities;
@@ -16,6 +13,17 @@ pub struct UserInformation {
     pub surname: String,
     pub email: String,
     pub auth_token: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Config {
+    pub global: Global,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Global {
+    pub source_path: String,
+    pub ip_addr: String,
 }
 
 impl fmt::Display for UserInformation {
