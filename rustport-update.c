@@ -24,6 +24,8 @@ int main() {
     printf("Error: %s\n", result.errmsg);
     exit(-1);
   }
+  free(full_path);
+  toml_free(result);
   const char* rustport_path = toml_seek(result.toptab, "global.source_path").u.s;
   chdir(rustport_path);
   int git_pull_status = system("git pull");
