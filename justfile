@@ -30,6 +30,7 @@ install: clean build
     @echo "[global]" >> ~/.passport/config.toml
     @echo "source_path = \"$(pwd)\"" >> ~/.passport/config.toml
     @echo "ip_addr = \"127.0.0.1\"" >> ~/.passport/config.toml
+    @echo "[alias]" >> ~/.passport/config.toml
     @echo '{"auth_token":"","name":"","surname":"","email":""}' > ~/.passport/authentication.json
     @cp ./assets/rustport_title.txt ~/.passport/rustport_title.txt
     @echo

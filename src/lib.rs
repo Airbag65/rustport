@@ -17,15 +17,34 @@ pub struct UserInformation {
     pub auth_token: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub global: Global,
+    pub alias: Option<Alias>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Global {
     pub source_path: String,
     pub ip_addr: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Alias {
+    pub list: Vec<String>,
+    pub add: Vec<String>,
+    pub edit: Vec<String>,
+    pub generate: Vec<String>,
+    pub get: Vec<String>,
+    pub help: Vec<String>,
+    pub version: Vec<String>,
+    pub init: Vec<String>,
+    pub login: Vec<String>,
+    pub signout: Vec<String>,
+    pub register: Vec<String>,
+    pub remove: Vec<String>,
+    pub reset_account: Vec<String>,
+    pub status: Vec<String>,
 }
 
 impl fmt::Display for UserInformation {

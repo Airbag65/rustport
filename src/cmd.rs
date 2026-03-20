@@ -3,13 +3,14 @@ use std::{env, process::exit};
 use color_print::cprintln;
 
 use crate::cmd::{
-    add::AddCommand, edit::EditCommand, generate::GenerateCommand, get::GetCommand,
-    help::HelpCommand, init::InitCommand, login::LoginCommand, logout::LogoutCommand,
-    ls::LsCommand, register::RegisterCommand, rm::RemoveCommand, rsacc::ResetAccountCommand,
-    status::StatusCommand, version::VersionCommand,
+    add::AddCommand, alias::AliasCommand, edit::EditCommand, generate::GenerateCommand,
+    get::GetCommand, help::HelpCommand, init::InitCommand, login::LoginCommand,
+    logout::LogoutCommand, ls::LsCommand, register::RegisterCommand, rm::RemoveCommand,
+    rsacc::ResetAccountCommand, status::StatusCommand, version::VersionCommand,
 };
 
 pub mod add;
+pub mod alias;
 pub mod edit;
 pub mod generate;
 pub mod get;
@@ -96,6 +97,16 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "rsacc" | "reset_account" => return Some(Box::new(ResetAccountCommand)),
         "generate" | "gen" => return Some(Box::new(GenerateCommand)),
         "version" | "v" => return Some(Box::new(VersionCommand)),
+        "alias" => {
+            if argument.len() != 4 {
+                eprintln!("Too few arguments!\nUsage: rustport alias <command> <alias>");
+                return None;
+            }
+            return Some(Box::new(AliasCommand {
+                command: argument[2].clone(),
+                alias: argument[3].clone(),
+            }));
+        }
         _ => {
             eprintln!("rustport: Invalid argument");
             return None;

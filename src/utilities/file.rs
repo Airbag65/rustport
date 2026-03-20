@@ -6,7 +6,7 @@ use std::{
     process::exit,
 };
 
-use crate::{Config, UserInformation};
+use crate::{Alias, Config, UserInformation};
 
 pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Error>> {
     let home_dir = match env::home_dir() {
@@ -37,7 +37,29 @@ pub fn get_configuration() -> Result<Config, Box<dyn std::error::Error>> {
     let home_str: &str = home_dir.to_str().unwrap();
     let full_path: String = String::from(home_str) + "/.passport/config.toml";
     let config_content: String = read_file(&full_path)?;
-    let config: Config = toml::from_str(&config_content)?;
+    let mut config: Config = toml::from_str(&config_content)?;
+    match config.alias {
+        Some(_) => {}
+        None => {
+            config.alias = Some(Alias {
+                list: vec![],
+                add: vec![],
+                edit: vec![],
+                generate: vec![],
+                get: vec![],
+                help: vec![],
+                version: vec![],
+                init: vec![],
+                login: vec![],
+                signout: vec![],
+                register: vec![],
+                remove: vec![],
+                reset_account: vec![],
+                status: vec![],
+            });
+            let _ = update_config(&config);
+        }
+    };
     Ok(config)
 }
 

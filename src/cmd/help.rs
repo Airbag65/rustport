@@ -8,7 +8,7 @@ impl Command for HelpCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
         let title = read_file("rustport_title.txt")?;
         cprintln!("<rgb(211, 69, 22)>{}</>", title);
-        println!("Usage: rustport <command> [flag] [<value>]");
+        println!("Usage: rustport <command> [arguments]");
         println!("COMMANDS:");
         println!("{:<30} {}", " init", "Choose IP address to target");
         cprintln!(
