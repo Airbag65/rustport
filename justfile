@@ -17,11 +17,9 @@ clean:
 # Build and install binary
 install: clean build
     @git clone https://github.com/cktan/tomlc17.git
-    @unset DEBUG
-    @cd ./tomlc17
-    @make
-    @cd ..
+    @make -C ./tomlc17
     @cc -Wall -Wextra -o rustport-update rustport-update.c ./tomlc17/src/libtomlc17.a
+    @rm -rf ./tomlc17
     @cp ./target/release/rp ~/.cargo/bin/rp
     @cp ./target/release/rp ~/.cargo/bin/rustport
     @cp ./rustport-update ~/.cargo/bin/rustport-update
