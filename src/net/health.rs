@@ -11,6 +11,7 @@ pub struct HealthRes {
     pub rustport_version: String,
 }
 
+#[allow(unused)]
 impl NetworkManager {
     pub async fn health(&self) -> Result<HealthRes, Box<dyn std::error::Error>> {
         let res: reqwest::Response = self

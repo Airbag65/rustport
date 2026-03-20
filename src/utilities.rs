@@ -8,10 +8,11 @@ use color_print::{ceprintln, cprintln};
 use rand::Rng;
 use regex::Regex;
 use tokio::{runtime::Handle, task::block_in_place};
+use version_compare::Version;
 
 use crate::{
     Config,
-    net::NetworkManager,
+    net::{NetworkManager, health::HealthRes},
     utilities::file::{get_configuration, get_local_information},
 };
 
@@ -191,4 +192,33 @@ pub fn convert_host(host_name: String) -> String {
         return convert_camel_case(String::from(host_name));
     }
     capitalize(&host_name)
+}
+
+#[allow(unused)]
+pub fn update_available() -> bool {
+    let nm: NetworkManager = NetworkManager::new();
+    let mut health: HealthRes = HealthRes {
+        health: String::new(),
+        rustport_version: String::new(),
+    };
+    block_in_place(|| {
+        Handle::current().block_on(async {
+            health = match nm.health().await {
+                Ok(v) => v,
+                Err(_) => HealthRes {
+                    health: "ConnectionFailed".to_string(),
+                    rustport_version: "N/A".to_string(),
+                },
+            };
+        })
+    });
+    if health.health == "ConnectionFailed" {
+        return false;
+    }
+    let current_version: Version = Version::from(env!("CARGO_PKG_VERSION")).unwrap();
+    let latest_version: Version = Version::from(&health.rustport_version).unwrap();
+    if current_version < latest_version {
+        return true;
+    }
+    false
 }

@@ -16,8 +16,15 @@ clean:
 
 # Build and install binary
 install: clean build
+    @git clone https://github.com/cktan/tomlc17.git
+    @unset DEBUG
+    @cd ./tomlc17
+    @make
+    @cd ..
+    @cc -Wall -Wextra -o rustport-update rustport-update.c ./tomlc17/src/libtomlc17.a
     @cp ./target/release/rp ~/.cargo/bin/rp
     @cp ./target/release/rp ~/.cargo/bin/rustport
+    @cp ./rustport-update ~/.cargo/bin/rustport-update
     @mkdir -p ~/.passport
     @touch ~/.passport/authentication.json
     @touch ~/.passport/publicKey.pem

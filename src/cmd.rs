@@ -6,7 +6,7 @@ use crate::cmd::{
     add::AddCommand, edit::EditCommand, generate::GenerateCommand, get::GetCommand,
     help::HelpCommand, init::InitCommand, login::LoginCommand, logout::LogoutCommand,
     ls::LsCommand, register::RegisterCommand, rm::RemoveCommand, rsacc::ResetAccountCommand,
-    status::StatusCommand, update::UpdateCommand, version::VersionCommand,
+    status::StatusCommand, version::VersionCommand,
 };
 
 pub mod add;
@@ -22,7 +22,6 @@ pub mod register;
 pub mod rm;
 pub mod rsacc;
 pub mod status;
-pub mod update;
 pub mod version;
 
 pub trait Command {
@@ -97,7 +96,6 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         "rsacc" | "reset_account" => return Some(Box::new(ResetAccountCommand)),
         "generate" | "gen" => return Some(Box::new(GenerateCommand)),
         "version" | "v" => return Some(Box::new(VersionCommand)),
-        "update" => return Some(Box::new(UpdateCommand)),
         _ => {
             eprintln!("rustport: Invalid argument");
             return None;
