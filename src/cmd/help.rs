@@ -54,6 +54,7 @@ impl Command for HelpCommand {
             " version", "Show the installed rustport version"
         );
         println!("{:<30} {}", " view", "View aliases for all commands");
+        println!("{:<30} {}", " config", "Edit rustport configuration file");
 
         Ok(())
     }

@@ -5,17 +5,18 @@ use color_print::cprintln;
 use crate::{
     Config,
     cmd::{
-        add::AddCommand, alias::AliasCommand, edit::EditCommand, generate::GenerateCommand,
-        get::GetCommand, help::HelpCommand, init::InitCommand, login::LoginCommand,
-        logout::LogoutCommand, ls::LsCommand, register::RegisterCommand, rm::RemoveCommand,
-        rsacc::ResetAccountCommand, status::StatusCommand, version::VersionCommand,
-        view::ViewCommand,
+        add::AddCommand, alias::AliasCommand, config::ConfigCommand, edit::EditCommand,
+        generate::GenerateCommand, get::GetCommand, help::HelpCommand, init::InitCommand,
+        login::LoginCommand, logout::LogoutCommand, ls::LsCommand, register::RegisterCommand,
+        rm::RemoveCommand, rsacc::ResetAccountCommand, status::StatusCommand,
+        version::VersionCommand, view::ViewCommand,
     },
     utilities::{file::get_configuration, vec_contains},
 };
 
 pub mod add;
 pub mod alias;
+pub mod config;
 pub mod edit;
 pub mod generate;
 pub mod get;
@@ -177,6 +178,10 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         || vec_contains(aliases.view, command_string.clone())
     {
         return Some(Box::new(ViewCommand));
+    } else if command_string.as_str() == "config"
+        || vec_contains(aliases.config, command_string.clone())
+    {
+        return Some(Box::new(ConfigCommand));
     } else {
         eprintln!("rustport: Invalid argument");
         return None;

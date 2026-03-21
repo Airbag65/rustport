@@ -24,19 +24,23 @@ int main() {
     printf("Error: %s\n", result.errmsg);
     exit(-1);
   }
-  free(full_path);
-  toml_free(result);
   const char* rustport_path = toml_seek(result.toptab, "global.source_path").u.s;
   chdir(rustport_path);
   int git_pull_status = system("git pull");
   if (git_pull_status != 0) {
     printf("Something went wrong (git pull)! Status: %d\n", git_pull_status);
+    free(full_path);
+    toml_free(result);
     exit(git_pull_status);
   }
   int just_update = system("just update");
   if (just_update != 0) {
     printf("Something went wrong (just update)! Status: %d\n", just_update);
+    free(full_path);
+    toml_free(result);
     exit(just_update);
   }
+  free(full_path);
+  toml_free(result);
   return 0;
 }

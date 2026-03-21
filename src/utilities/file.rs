@@ -67,6 +67,7 @@ pub fn get_configuration() -> Result<Config, Box<dyn std::error::Error>> {
                 status: vec![],
                 alias: vec![],
                 view: vec![],
+                config: vec![],
             });
             let _ = update_config(&config);
         }
