@@ -11,66 +11,49 @@ impl Command for HelpCommand {
         println!("Usage: rustport <command> [arguments]");
         println!("COMMANDS:");
         println!("{:<30} {}", " init", "Choose IP address to target");
-        cprintln!(
-            "{:<30} {} <i><c>#alias: st</></>",
-            " status",
-            "Check login status"
-        );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: lo</></>",
-            " login",
-            "Login to rustport"
-        );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: so</></>",
-            " signout",
-            "Sign out from rustport"
-        );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: reg</></>",
-            " register",
-            "Sign up new user to rustport"
-        );
+        println!("{:<30} {}", " status", "Check login status");
+        println!("{:<30} {}", " login", "Login to rustport");
+        println!("{:<30} {}", " signout", "Sign out from rustport");
+        println!("{:<30} {}", " register", "Sign up new user to rustport");
         println!("{:<30} {}", " add", "Add a new password");
         println!(
             "{:<30} {}",
             " get [-h --host] <hostname>", "Retrieve the password for the specified hostname"
         );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: ls</></>",
-            " list",
-            "List all the hosts you have registered passwords for"
+        println!(
+            "{:<30} {}",
+            " list", "List all the hosts you have registered passwords for"
         );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: rm</></>",
-            " remove [-h --host] <hostname>",
-            "Remove the password for the specified hostname"
+        println!(
+            "{:<30} {}",
+            " remove [-h --host] <hostname>", "Remove the password for the specified hostname"
         );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: gen</></>",
-            " generate",
-            "Generate a pseudo-random 20 characters long password"
+        println!(
+            "{:<30} {}",
+            " generate", "Generate a pseudo-random 20 characters long password"
         );
         println!(
             "{:<30} {}",
             " edit [-h --host] <hostname>", "Edit the password for the specified hostname"
         );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: rsacc</></>",
-            " reset_account",
-            "Send an account-reset-request to server"
+        println!(
+            "{:<30} {}",
+            " reset_account", "Send an account-reset-request to server"
+        );
+        println!(
+            "{:<30} {}",
+            " alias <command> <alias>", "Add an alias for a command"
         );
         println!();
-        cprintln!(
-            "{:<30} {} <i><c>#alias: h</></>",
-            " help",
-            "Lists all possible commands and their usage"
+        println!(
+            "{:<30} {}",
+            " help", "Lists all possible commands and their usage"
         );
-        cprintln!(
-            "{:<30} {} <i><c>#alias: v</></>",
-            " version",
-            "Show the installed rustport version"
+        println!(
+            "{:<30} {}",
+            " version", "Show the installed rustport version"
         );
+        println!("{:<30} {}", " view", "View aliases for all commands");
 
         Ok(())
     }

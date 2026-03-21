@@ -45,6 +45,16 @@ pub struct Alias {
     pub remove: Vec<String>,
     pub reset_account: Vec<String>,
     pub status: Vec<String>,
+    pub alias: Vec<String>,
+    pub view: Vec<String>,
+}
+
+struct VecWrapper(Vec<String>);
+
+impl fmt::Display for VecWrapper {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0.join(", "))
+    }
 }
 
 impl fmt::Display for UserInformation {
@@ -53,6 +63,31 @@ impl fmt::Display for UserInformation {
             f,
             "Name: {} {}\nAuth token: {}\nEmail: {}",
             self.name, self.surname, self.auth_token, self.email
+        )
+    }
+}
+
+impl fmt::Display for Alias {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "list: {}\nadd: {}\nedit: {}\ngenerate: {}\nget: {}\nhelp: {}\nversion: {}\ninit: {}\nlogin: {}\nsignout: {}\nregister: {}\nremove: {}\nreset_account: {}\nstatus: {}\nalias: {}\nview: {}",
+            VecWrapper(self.list.clone()),
+            VecWrapper(self.add.clone()),
+            VecWrapper(self.edit.clone()),
+            VecWrapper(self.generate.clone()),
+            VecWrapper(self.get.clone()),
+            VecWrapper(self.help.clone()),
+            VecWrapper(self.version.clone()),
+            VecWrapper(self.init.clone()),
+            VecWrapper(self.login.clone()),
+            VecWrapper(self.signout.clone()),
+            VecWrapper(self.register.clone()),
+            VecWrapper(self.remove.clone()),
+            VecWrapper(self.reset_account.clone()),
+            VecWrapper(self.status.clone()),
+            VecWrapper(self.alias.clone()),
+            VecWrapper(self.view.clone())
         )
     }
 }

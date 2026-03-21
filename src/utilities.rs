@@ -222,3 +222,12 @@ pub fn update_available() -> bool {
     }
     false
 }
+
+pub fn vec_contains(vec: Vec<String>, str: String) -> bool {
+    for item in vec {
+        if item == str {
+            return true;
+        }
+    }
+    false
+}

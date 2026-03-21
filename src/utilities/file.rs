@@ -37,7 +37,16 @@ pub fn get_configuration() -> Result<Config, Box<dyn std::error::Error>> {
     let home_str: &str = home_dir.to_str().unwrap();
     let full_path: String = String::from(home_str) + "/.passport/config.toml";
     let config_content: String = read_file(&full_path)?;
-    let mut config: Config = toml::from_str(&config_content)?;
+    let mut config: Config = match toml::from_str(&config_content) {
+        Ok(v) => v,
+        Err(_) => Config {
+            global: crate::Global {
+                source_path: ".".to_owned(),
+                ip_addr: "127.0.0.1".to_owned(),
+            },
+            alias: None,
+        },
+    };
     match config.alias {
         Some(_) => {}
         None => {
@@ -56,6 +65,8 @@ pub fn get_configuration() -> Result<Config, Box<dyn std::error::Error>> {
                 remove: vec![],
                 reset_account: vec![],
                 status: vec![],
+                alias: vec![],
+                view: vec![],
             });
             let _ = update_config(&config);
         }
