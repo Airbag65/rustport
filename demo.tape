@@ -4,33 +4,33 @@ Set FontSize 16
 Set Width 1200
 Set Height 700
 Set Margin 10
-Set MarginFill "#d34516"
+Set MarginFill "#21aaff"
 
-Type "rustport"
+Type "passport"
 Sleep 500ms
 Enter
 
 Sleep 5s
 
-Type "rustport help"
+Type "passport help"
 Sleep 500ms
 Enter
 
 Sleep 5s
 
-Type "rustport st"
+Type "passport st"
 Sleep 500ms
 Enter
 
 Sleep 5s
 
-Type "rustport ls"
+Type "passport ls"
 Sleep 500ms
 Enter
 
 Sleep 5s
 
-Type "rustport get --host test_host"
+Type "passport get --host test_host"
 Sleep 1000ms
 Enter
 

@@ -6,15 +6,15 @@ pub struct HelpCommand;
 
 impl Command for HelpCommand {
     fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
-        let title = read_file("rustport_title.txt")?;
-        cprintln!("<rgb(211, 69, 22)>{}</>", title);
-        println!("Usage: rustport <command> [arguments]");
+        let title = read_file("passport_title.txt")?;
+        cprintln!("<rgb(33, 170, 255)>{}</>", title);
+        println!("Usage: passport <command> [arguments]");
         println!("COMMANDS:");
         println!("{:<30} {}", " init", "Choose IP address to target");
         println!("{:<30} {}", " status", "Check login status");
-        println!("{:<30} {}", " login", "Login to rustport");
-        println!("{:<30} {}", " signout", "Sign out from rustport");
-        println!("{:<30} {}", " register", "Sign up new user to rustport");
+        println!("{:<30} {}", " login", "Login to passport");
+        println!("{:<30} {}", " signout", "Sign out from passport");
+        println!("{:<30} {}", " register", "Sign up new user to passport");
         println!("{:<30} {}", " add", "Add a new password");
         println!(
             "{:<30} {}",
@@ -51,10 +51,10 @@ impl Command for HelpCommand {
         );
         println!(
             "{:<30} {}",
-            " version", "Show the installed rustport version"
+            " version", "Show the installed passport version"
         );
         println!("{:<30} {}", " view", "View aliases for all commands");
-        println!("{:<30} {}", " config", "Edit rustport configuration file");
+        println!("{:<30} {}", " config", "Edit passport configuration file");
 
         Ok(())
     }

@@ -2,11 +2,11 @@ alias r := run
 alias i := install
 
 
-# Build RUSTPORT
+# Build PASSPORT
 build:
     cargo build --release
 
-# Run RUSTPORT with given CMD
+# Run passport with given CMD
 run CMD="" FLAG="" VAL="":
     cargo run {{CMD}} {{FLAG}} {{VAL}}
 
@@ -18,10 +18,10 @@ clean:
 install: clean build
     @git clone https://github.com/cktan/tomlc17.git
     @make -C ./tomlc17
-    @cc -Wall -Wextra -o rustport-update rustport-update.c ./tomlc17/src/libtomlc17.a
-    @cp ./target/release/rp ~/.cargo/bin/rp
-    @cp ./target/release/rp ~/.cargo/bin/rustport
-    @cp ./rustport-update ~/.cargo/bin/rustport-update
+    @cc -Wall -Wextra -o passport-update rustport-update.c ./tomlc17/src/libtomlc17.a
+    @cp ./target/release/rp ~/.cargo/bin/pp
+    @cp ./target/release/rp ~/.cargo/bin/passport
+    @cp ./passport-update ~/.cargo/bin/passport-update
     @mkdir -p ~/.passport
     @touch ~/.passport/authentication.json
     @touch ~/.passport/publicKey.pem
@@ -30,14 +30,15 @@ install: clean build
     @echo "source_path = \"$(pwd)\"" >> ~/.passport/config.toml
     @echo "ip_addr = \"127.0.0.1\"" >> ~/.passport/config.toml
     @echo '{"auth_token":"","name":"","surname":"","email":""}' > ~/.passport/authentication.json
-    @cp ./assets/rustport_title.txt ~/.passport/rustport_title.txt
+    @cp ./assets/passport_title.txt ~/.passport/passport_title.txt
     @echo
-    @echo "RUSTPORT ( Binary: [rustport | rp] ) has been installed."
-    @echo "Make sure to have ~/.cargo/bin in your PATH in order to use RUSTPORT"
+    @echo "passport ( Binary: [passport | pp] ) has been installed."
+    @echo "Make sure to have ~/.cargo/bin in your PATH in order to use passport"
 
-# Update rustport
+# Update passport
+
 update: build
-    @cp ./target/release/rp ~/.cargo/bin/rp
-    @cp ./target/release/rp ~/.cargo/bin/rustport
+    @cp ./target/release/rp ~/.cargo/bin/pp
+    @cp ./target/release/rp ~/.cargo/bin/passport
     @echo
-    @echo "RUSTPORT ( Binary: [rustport | rp] ) has been updated."
+    @echo "passport ( Binary: [passport| pp] ) has been updated."

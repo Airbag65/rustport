@@ -30,15 +30,15 @@ impl cmd::Command for StatusCommand {
                     }
                 };
                 if res {
-                    cprintln!("<green>You are signed in to rustport! rustport is ready to use</>");
+                    cprintln!("<green>You are signed in to passport! passport is ready to use</>");
                     println!("Your credentials:");
                     println!("-----------------");
                     println!("Name: {} {}", local_info.name, local_info.surname);
                     println!("Email: {}", local_info.email);
                     println!("Using IP: {}", get_ip());
                 } else {
-                    cprintln!("<red>You are not signed in to rustport!</>");
-                    cprintln!("<red>Run 'rustport login' to sign in</>");
+                    cprintln!("<red>You are not signed in to passport!</>");
+                    cprintln!("<red>Run 'passport login' to sign in</>");
                     println!("Using IP: {}", get_ip());
                 }
             })

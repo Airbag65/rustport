@@ -49,8 +49,8 @@ pub fn ensure_auth() -> String {
             let _ = match nm.validate_token(&token).await {
                 Ok(_) => return token,
                 Err(_) => {
-                    cprintln!("<red>You are not signed in to rustport!</>");
-                    cprintln!("<red>Run 'rustport login' to sign in</>");
+                    cprintln!("<red>You are not signed in to passport!</>");
+                    cprintln!("<red>Run 'passport login' to sign in</>");
                     exit(0);
                 }
             };

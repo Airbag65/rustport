@@ -21,7 +21,7 @@ impl NetworkManager {
         let list = self.list(&token).await?;
         if !list.hosts.iter().any(|host| host_name.contains(host)) {
             cprintln!(
-                "<red>Password for '{}' does not exist\nRun 'rustport list' or 'rustport ls' to see available passwords",
+                "<red>Password for '{}' does not exist\nRun 'passport list' to see available passwords",
                 &host_name
             );
             exit(0);

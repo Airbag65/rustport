@@ -41,8 +41,8 @@ pub fn get_command() -> Option<Box<dyn Command>> {
         .map(|arg| arg.to_string())
         .collect::<Vec<String>>();
     if argument.len() < 2 {
-        println!("Usage: rustport <command>");
-        cprintln!("<yellow>Run 'rustport help' for further instructions</>");
+        println!("Usage: passport <command>");
+        cprintln!("<yellow>Run 'passport help' for further instructions</>");
         exit(0);
     }
     let command_string = String::from(argument[1].clone());
@@ -86,7 +86,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     {
         if argument.len() != 4 {
             eprintln!(
-                "Too few arguments!\nUsage: rustport {} [-h --host] <value>",
+                "Too few arguments!\nUsage: passport {} [-h --host] <value>",
                 argument[1]
             );
             return None;
@@ -97,7 +97,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             }));
         }
         eprintln!(
-            "Invalid flag!\nUsage: rustport {} [-h --host] <value>",
+            "Invalid flag!\nUsage: passport {} [-h --host] <value>",
             argument[1]
         );
         return None;
@@ -113,7 +113,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     {
         if argument.len() != 4 {
             eprintln!(
-                "Too few arguments!\nUsage: rustport {} [-h --host] <value>",
+                "Too few arguments!\nUsage: passport {} [-h --host] <value>",
                 argument[1]
             );
             return None;
@@ -124,7 +124,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             }));
         }
         eprintln!(
-            "Invalid flag!\nUsage: rustport {} [-h --host] <value>",
+            "Invalid flag!\nUsage: passport {} [-h --host] <value>",
             argument[1]
         );
         return None;
@@ -133,7 +133,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     {
         if argument.len() != 4 {
             eprintln!(
-                "Too few arguments!\nUsage: rustport {} [-h --host] <value>",
+                "Too few arguments!\nUsage: passport {} [-h --host] <value>",
                 argument[1]
             );
             return None;
@@ -144,7 +144,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
             }));
         }
         eprintln!(
-            "Invalid flag!\nUsage: rustport {} [-h --host] <value>",
+            "Invalid flag!\nUsage: passport {} [-h --host] <value>",
             argument[1]
         );
         return None;
@@ -165,7 +165,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     {
         if argument.len() != 4 {
             eprintln!(
-                "Too few arguments!\nUsage: rustport {} <command> <alias>",
+                "Too few arguments!\nUsage: passport {} <command> <alias>",
                 argument[1]
             );
             return None;
@@ -183,7 +183,7 @@ pub fn get_command() -> Option<Box<dyn Command>> {
     {
         return Some(Box::new(ConfigCommand));
     } else {
-        eprintln!("rustport: Invalid argument");
+        eprintln!("passport: Invalid argument");
         return None;
     }
 }

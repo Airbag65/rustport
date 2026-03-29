@@ -116,8 +116,8 @@ impl fmt::Display for Alias {
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     if update_available() {
         print_boxed("   NOTICE!   ");
-        println!("There is a new rustport version available!");
-        println!("Run 'rustport-update' to upgrade to the newest version");
+        println!("There is a new passport version available!");
+        println!("Run 'passport-update' to upgrade to the newest version");
         println!("------------------------------------------------------");
     }
     let command = match cmd::get_command() {
