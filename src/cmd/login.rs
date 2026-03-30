@@ -24,7 +24,10 @@ impl cmd::Command for LoginCommand {
         block_in_place(move || {
             Handle::current().block_on(async move {
                 let nm: NetworkManager = NetworkManager::new();
-                let has_valid_token: bool = match nm.validate_token(&local_info.auth_token).await {
+                let has_valid_token: bool = match nm
+                    .validate_token(&local_info.auth_token, &local_info.email)
+                    .await
+                {
                     Ok(v) => v.to_owned(),
                     Err(e) => {
                         ceprintln!("<red>Something went wrong:</> {:?}", e);

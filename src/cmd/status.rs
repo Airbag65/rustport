@@ -21,7 +21,10 @@ impl cmd::Command for StatusCommand {
         };
         block_in_place(move || {
             Handle::current().block_on(async move {
-                let res: bool = match nm.validate_token(&local_info.auth_token).await {
+                let res: bool = match nm
+                    .validate_token(&local_info.auth_token, &local_info.email)
+                    .await
+                {
                     Ok(v) => v,
                     Err(_) => {
                         ceprintln!("<red>Could not connect to server</>");

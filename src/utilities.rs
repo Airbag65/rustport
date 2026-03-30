@@ -39,15 +39,18 @@ pub fn ensure_auth() -> String {
     block_in_place(move || {
         Handle::current().block_on(async move {
             let nm: NetworkManager = NetworkManager::new();
-            let token: String = match get_local_information() {
-                Ok(auth) => auth.auth_token,
+            let local_info: crate::UserInformation = match get_local_information() {
+                Ok(auth) => auth,
                 Err(_) => {
                     ceprintln!("<red>No local auth token found</>");
                     exit(0)
                 }
             };
-            let _ = match nm.validate_token(&token).await {
-                Ok(_) => return token,
+            let _ = match nm
+                .validate_token(&local_info.auth_token, &local_info.email)
+                .await
+            {
+                Ok(_) => return local_info.auth_token,
                 Err(_) => {
                     cprintln!("<red>You are not signed in to passport!</>");
                     cprintln!("<red>Run 'passport login' to sign in</>");

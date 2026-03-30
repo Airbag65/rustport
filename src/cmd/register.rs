@@ -45,7 +45,10 @@ impl Command for RegisterCommand {
                         exit(0)
                     }
                 };
-                let has_valid_token = match nm.validate_token(&local_auth.auth_token).await {
+                let has_valid_token = match nm
+                    .validate_token(&local_auth.auth_token, &local_auth.email)
+                    .await
+                {
                     Ok(v) => v.to_owned(),
                     Err(e) => {
                         ceprintln!("<red>Something went wrong! Error: {}</>", e);
