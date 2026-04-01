@@ -15,11 +15,11 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
     };
 
     let home_str: &str = home_dir.to_str().unwrap();
-    let full_path = String::from(home_str) + "/.passport/authentication.json";
+    let full_path = String::from(home_str) + "/.portsuite/authentication.json";
     let file: File = match File::open(&full_path) {
         Ok(f) => f,
         Err(_) => {
-            fs::create_dir(PathBuf::from(String::from(home_str) + "/.passport"))?;
+            fs::create_dir(PathBuf::from(String::from(home_str) + "/.portsuite"))?;
             let f = fs::File::create(full_path)?;
             f
         }
@@ -104,7 +104,7 @@ pub fn save_local_auth(
     };
 
     let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
-    path.push(".passport");
+    path.push(".portsuite");
     fs::create_dir_all(&path)?;
     path.push("authentication.json");
     fs::write(path, serde_json::to_string(&user)?)?;
@@ -114,7 +114,7 @@ pub fn save_local_auth(
 #[allow(unused)]
 pub fn remove_local_auth() -> Result<(), Box<dyn std::error::Error>> {
     let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
-    path.push(".passport");
+    path.push(".portsuite");
     fs::create_dir_all(&path)?;
     path.push("authentication.json");
     let empty_user: UserInformation = UserInformation {

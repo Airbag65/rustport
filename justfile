@@ -23,13 +23,14 @@ install: clean build
     @cp ./target/release/rp ~/.cargo/bin/passport
     @cp ./passport-update ~/.cargo/bin/passport-update
     @mkdir -p ~/.passport
-    @touch ~/.passport/authentication.json
+    @mkdir -p ~/.portsuite
+    @touch ~/.portsuite/authentication.json
     @touch ~/.passport/publicKey.pem
     @echo "" > ~/.passport/config.toml
     @echo "[global]" >> ~/.passport/config.toml
     @echo "source_path = \"$(pwd)\"" >> ~/.passport/config.toml
     @echo "ip_addr = \"127.0.0.1\"" >> ~/.passport/config.toml
-    @echo '{"auth_token":"","name":"","surname":"","email":""}' > ~/.passport/authentication.json
+    @echo '{"auth_token":"","name":"","surname":"","email":""}' > ~/.portsuite/authentication.json
     @cp ./assets/passport_title.txt ~/.passport/passport_title.txt
     @echo
     @echo "passport ( Binary: [passport | pp] ) has been installed."
