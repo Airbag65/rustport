@@ -7,7 +7,6 @@ use std::{
 use color_print::{ceprintln, cprintln};
 use rand::Rng;
 use regex::Regex;
-use tokio::{runtime::Handle, task::block_in_place};
 use version_compare::Version;
 
 use crate::{
@@ -18,7 +17,7 @@ use crate::{
 
 pub mod file;
 
-pub fn read_input(prompt: impl Display) -> Result<String, Box<dyn std::error::Error>> {
+pub fn read_input(prompt: impl Display) -> Result<String, anyhow::Error> {
     let mut buffer = String::new();
     print!("{prompt}");
     let _ = std::io::stdout().flush().unwrap();
@@ -36,29 +35,22 @@ pub fn get_ip() -> String {
 }
 
 pub fn ensure_auth() -> String {
-    block_in_place(move || {
-        Handle::current().block_on(async move {
-            let nm: NetworkManager = NetworkManager::new();
-            let local_info: crate::UserInformation = match get_local_information() {
-                Ok(auth) => auth,
-                Err(_) => {
-                    ceprintln!("<red>No local auth token found</>");
-                    exit(0)
-                }
-            };
-            let _ = match nm
-                .validate_token(&local_info.auth_token, &local_info.email)
-                .await
-            {
-                Ok(_) => return local_info.auth_token,
-                Err(_) => {
-                    cprintln!("<red>You are not signed in to passport!</>");
-                    cprintln!("<red>Run 'passport login' to sign in</>");
-                    exit(0);
-                }
-            };
-        })
-    })
+    let nm: NetworkManager = NetworkManager::new();
+    let local_info: crate::UserInformation = match get_local_information() {
+        Ok(auth) => auth,
+        Err(_) => {
+            ceprintln!("<red>No local auth token found</>");
+            exit(0)
+        }
+    };
+    let _ = match nm.validate_token(&local_info.auth_token, &local_info.email) {
+        Ok(_) => return local_info.auth_token,
+        Err(_) => {
+            cprintln!("<red>You are not signed in to passport!</>");
+            cprintln!("<red>Run 'passport login' to sign in</>");
+            exit(0);
+        }
+    };
 }
 
 pub fn print_boxed(content: &str) {
@@ -204,17 +196,13 @@ pub fn update_available() -> bool {
         health: String::new(),
         rustport_version: String::new(),
     };
-    block_in_place(|| {
-        Handle::current().block_on(async {
-            health = match nm.health().await {
-                Ok(v) => v,
-                Err(_) => HealthRes {
-                    health: "ConnectionFailed".to_string(),
-                    rustport_version: "N/A".to_string(),
-                },
-            };
-        })
-    });
+    health = match nm.health() {
+        Ok(v) => v,
+        Err(_) => HealthRes {
+            health: "ConnectionFailed".to_string(),
+            rustport_version: "N/A".to_string(),
+        },
+    };
     if health.health == "ConnectionFailed" {
         return false;
     }

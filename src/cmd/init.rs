@@ -11,7 +11,7 @@ use crate::{
 pub struct InitCommand;
 
 impl cmd::Command for InitCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         let ip_addr = read_input("Enter IP address: ")?;
         let mut config: Config = get_configuration()?;
         config.global.ip_addr = ip_addr.clone();

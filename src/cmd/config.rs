@@ -7,7 +7,7 @@ use crate::cmd::Command;
 pub struct ConfigCommand;
 
 impl Command for ConfigCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         let mut path = match env::home_dir() {
             Some(p) => p,
             None => {

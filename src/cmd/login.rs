@@ -14,7 +14,7 @@ use crate::{
 pub struct LoginCommand;
 
 impl cmd::Command for LoginCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         // Clear the terminal window ANSI escape code
         print!("\x1B[2J\x1B[1;1H");
         let email = read_input("Email: ")?;
@@ -24,16 +24,14 @@ impl cmd::Command for LoginCommand {
         block_in_place(move || {
             Handle::current().block_on(async move {
                 let nm: NetworkManager = NetworkManager::new();
-                let has_valid_token: bool = match nm
-                    .validate_token(&local_info.auth_token, &local_info.email)
-                    .await
-                {
-                    Ok(v) => v.to_owned(),
-                    Err(e) => {
-                        ceprintln!("<red>Something went wrong:</> {:?}", e);
-                        return;
-                    }
-                };
+                let has_valid_token: bool =
+                    match nm.validate_token(&local_info.auth_token, &local_info.email) {
+                        Ok(v) => v.to_owned(),
+                        Err(e) => {
+                            ceprintln!("<red>Something went wrong:</> {:?}", e);
+                            return;
+                        }
+                    };
                 if has_valid_token {
                     cprintln!(
                         "<yellow>Already logged in with email '{}'</>",
@@ -41,7 +39,7 @@ impl cmd::Command for LoginCommand {
                     );
                     return;
                 }
-                let res: LoginRes = nm.login(email.clone(), password).await.unwrap();
+                let res: LoginRes = nm.login(email.clone(), password).unwrap();
                 match res.response_code {
                     200 => {
                         let _ = match save_pem_string(&res.pem_string) {

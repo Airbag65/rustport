@@ -33,7 +33,7 @@ pub mod version;
 pub mod view;
 
 pub trait Command {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>>;
+    fn execute(&self) -> Result<(), anyhow::Error>;
 }
 
 pub fn get_command() -> Option<Box<dyn Command>> {

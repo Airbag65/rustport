@@ -12,19 +12,18 @@ pub mod valid;
 
 #[derive(Clone)]
 pub struct NetworkManager {
-    client: reqwest::Client,
+    client: reqwest::blocking::Client,
 }
 
 impl NetworkManager {
     pub fn new() -> NetworkManager {
-        let client = match reqwest::Client::builder()
+        let client = match reqwest::blocking::Client::builder()
             .danger_accept_invalid_certs(true)
             .build()
         {
-            Ok(client) => reqwest::Client::from(client),
-            Err(_) => reqwest::Client::new(),
+            Ok(client) => reqwest::blocking::Client::from(client),
+            Err(_) => reqwest::blocking::Client::new(),
         };
-        let nm: NetworkManager = NetworkManager { client };
-        nm
+        NetworkManager { client }
     }
 }

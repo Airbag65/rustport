@@ -113,7 +113,7 @@ impl fmt::Display for Alias {
     }
 }
 
-pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
+pub fn run() -> Result<(), anyhow::Error> {
     if update_available() {
         print_boxed("   NOTICE!   ");
         println!("There is a new passport version available!");

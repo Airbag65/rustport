@@ -13,17 +13,16 @@ pub struct HealthRes {
 
 #[allow(unused)]
 impl NetworkManager {
-    pub async fn health(&self) -> Result<HealthRes, Box<dyn std::error::Error>> {
-        let res: reqwest::Response = self
+    pub fn health(&self) -> Result<HealthRes, anyhow::Error> {
+        let res: reqwest::blocking::Response = self
             .client
             .get("https://".to_owned() + get_ip().as_str() + "/status")
-            .send()
-            .await?;
+            .send()?;
 
         if res.status() != 200 {
             exit(0);
         }
-        let response: HealthRes = serde_json::from_str(res.text().await?.as_str())?;
+        let response: HealthRes = serde_json::from_str(res.text()?.as_str())?;
         Ok(response)
     }
 }

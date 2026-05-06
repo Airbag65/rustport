@@ -18,7 +18,7 @@ pub struct EditPasswordReq {
 
 impl NetworkManager {
     #[allow(unused)]
-    pub async fn edit_password(
+    pub fn edit_password(
         &self,
         host_name: String,
         new_password: String,
@@ -38,13 +38,12 @@ impl NetworkManager {
             new_password: enc_password,
         };
         let req_string: String = serde_json::to_string(&req)?;
-        let res: reqwest::Response = self
+        let res: reqwest::blocking::Response = self
             .client
             .put("https://".to_owned() + get_ip().as_str() + ":443/pwd/edit")
             .header("Authorization", "Bearer ".to_owned() + token.as_str())
             .body(req_string)
-            .send()
-            .await?;
+            .send()?;
         if res.status().as_u16() == 200 {
             return Ok(true);
         }

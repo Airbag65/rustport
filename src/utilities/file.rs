@@ -6,9 +6,11 @@ use std::{
     process::exit,
 };
 
+use anyhow::anyhow;
+
 use crate::{Alias, Config, UserInformation};
 
-pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Error>> {
+pub fn get_local_information() -> Result<UserInformation, anyhow::Error> {
     let home_dir = match env::home_dir() {
         Some(path) => path,
         None => PathBuf::new(),
@@ -29,7 +31,7 @@ pub fn get_local_information() -> Result<UserInformation, Box<dyn std::error::Er
     Ok(user)
 }
 
-pub fn get_configuration() -> Result<Config, Box<dyn std::error::Error>> {
+pub fn get_configuration() -> Result<Config, anyhow::Error> {
     let home_dir: PathBuf = match env::home_dir() {
         Some(path) => path,
         None => exit(0),
@@ -75,14 +77,17 @@ pub fn get_configuration() -> Result<Config, Box<dyn std::error::Error>> {
     Ok(config)
 }
 
-pub fn update_config(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
+pub fn update_config(config: &Config) -> Result<(), anyhow::Error> {
     let config_string = toml::to_string(&config)?;
     write_file("config.toml", &config_string)?;
     Ok(())
 }
 
-pub fn save_pem_string(pem_string: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+pub fn save_pem_string(pem_string: &str) -> Result<(), anyhow::Error> {
+    let mut path: PathBuf = match env::home_dir() {
+        Some(v) => v,
+        None => return Err(anyhow!("Could not get home dir")),
+    };
     path.push(".passport");
     fs::create_dir_all(&path)?;
     path.push("publicKey.pem");
@@ -95,7 +100,7 @@ pub fn save_local_auth(
     surname: &str,
     email: &str,
     auth_token: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<(), anyhow::Error> {
     let user: UserInformation = UserInformation {
         name: String::from(name),
         surname: String::from(surname),
@@ -103,7 +108,10 @@ pub fn save_local_auth(
         auth_token: String::from(auth_token),
     };
 
-    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+    let mut path: PathBuf = match env::home_dir() {
+        Some(v) => v,
+        None => return Err(anyhow!("Could not get home dir")),
+    };
     path.push(".portsuite");
     fs::create_dir_all(&path)?;
     path.push("authentication.json");
@@ -112,8 +120,11 @@ pub fn save_local_auth(
 }
 
 #[allow(unused)]
-pub fn remove_local_auth() -> Result<(), Box<dyn std::error::Error>> {
-    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+pub fn remove_local_auth() -> Result<(), anyhow::Error> {
+    let mut path: PathBuf = match env::home_dir() {
+        Some(v) => v,
+        None => return Err(anyhow!("Could not get home dir")),
+    };
     path.push(".portsuite");
     fs::create_dir_all(&path)?;
     path.push("authentication.json");
@@ -127,8 +138,11 @@ pub fn remove_local_auth() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub fn write_file(filename: &str, content: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+pub fn write_file(filename: &str, content: &str) -> Result<(), anyhow::Error> {
+    let mut path: PathBuf = match env::home_dir() {
+        Some(v) => v,
+        None => return Err(anyhow!("Could not get home dir")),
+    };
     path.push(".passport");
     fs::create_dir_all(&path)?;
     path.push(filename);
@@ -136,8 +150,11 @@ pub fn write_file(filename: &str, content: &str) -> Result<(), Box<dyn std::erro
     Ok(())
 }
 
-pub fn read_file(filename: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let mut path: PathBuf = env::home_dir().ok_or("Could not find home directory")?;
+pub fn read_file(filename: &str) -> Result<String, anyhow::Error> {
+    let mut path: PathBuf = match env::home_dir() {
+        Some(v) => v,
+        None => return Err(anyhow!("Could not get home dir")),
+    };
     path.push(".passport");
     fs::create_dir_all(&path)?;
     path.push(filename);

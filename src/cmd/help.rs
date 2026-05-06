@@ -5,7 +5,7 @@ use crate::{cmd::Command, utilities::file::read_file};
 pub struct HelpCommand;
 
 impl Command for HelpCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         let title = read_file("passport_title.txt")?;
         cprintln!("<rgb(33, 170, 255)>{}</>", title);
         println!("Usage: passport <command> [arguments]");

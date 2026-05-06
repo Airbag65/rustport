@@ -15,7 +15,7 @@ pub struct AliasCommand {
 }
 
 impl Command for AliasCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         let mut config_aliases = get_configuration()?;
         let mut alias_str = toml::to_string(
             &config_aliases

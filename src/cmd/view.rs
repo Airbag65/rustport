@@ -7,7 +7,7 @@ use crate::{cmd::Command, utilities::file::get_configuration};
 pub struct ViewCommand;
 
 impl Command for ViewCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         let config = get_configuration()?;
         if !config.alias.is_some() {
             cprintln!("<red>Something went wrong</>");

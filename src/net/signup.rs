@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
-
 use crate::{net::NetworkManager, utilities::get_ip};
+use anyhow::anyhow;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Debug)]
 struct RegisterReq {
@@ -23,15 +23,15 @@ pub struct RegisterRes {
 
 impl NetworkManager {
     #[allow(unused)]
-    pub async fn sign_up(
+    pub fn sign_up(
         &self,
         name: &str,
         surname: &str,
         email: &str,
         password: &str,
-    ) -> Result<RegisterRes, Box<dyn std::error::Error>> {
+    ) -> Result<RegisterRes, anyhow::Error> {
         if name == "" || surname == "" || email == "" || password == "" {
-            return Err("Insufficiuent informationm provided")?;
+            return Err(anyhow!("Insufficient information provided"));
         }
         let req: RegisterReq = RegisterReq {
             email: String::from(email),
@@ -41,19 +41,17 @@ impl NetworkManager {
         };
         let req_string: String = serde_json::to_string(&req)?;
 
-        let res: reqwest::Response = self
+        let res: reqwest::blocking::Response = self
             .client
             .post("https://".to_owned() + get_ip().as_str() + ":443/auth/new")
             .header("Content-Type", "application/json")
             .body(req_string.clone())
-            .send()
-            .await?;
+            .send()?;
 
         if res.status().as_u16() != 200 {
-            return Err("Status code was not 200")?;
+            return Err(anyhow!("Status code was not 200"));
         }
-
-        let reg_res: RegisterRes = serde_json::from_str(&res.text().await?)?;
+        let reg_res: RegisterRes = serde_json::from_str(&res.text()?)?;
 
         Ok(reg_res)
     }

@@ -10,19 +10,18 @@ pub struct ResetAccountRequest {
 
 impl NetworkManager {
     #[allow(unused)]
-    pub async fn reset_account(&self, email: String) -> bool {
+    pub fn reset_account(&self, email: String) -> bool {
         let req: ResetAccountRequest = ResetAccountRequest { email };
         let req_string: String = match serde_json::to_string(&req) {
             Ok(v) => v,
             Err(_) => return false,
         };
-        let res: reqwest::Response = match self
+        let res: reqwest::blocking::Response = match self
             .client
             .put("https://".to_owned() + get_ip().as_str() + ":443/auth/reset")
             .header("Content-Type", "application/json")
             .body(req_string)
             .send()
-            .await
         {
             Ok(v) => v,
             Err(_) => return false,

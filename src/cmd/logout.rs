@@ -1,5 +1,4 @@
 use color_print::{ceprintln, cprintln};
-use tokio::{runtime::Handle, task::block_in_place};
 
 use crate::{
     cmd::Command,
@@ -10,28 +9,24 @@ use crate::{
 pub struct LogoutCommand;
 
 impl Command for LogoutCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
-        block_in_place(move || {
-            Handle::current().block_on(async move {
-                let nm: NetworkManager = NetworkManager::new();
-                let response: SignOutRes = match nm.sign_out().await {
-                    Ok(res) => res,
-                    Err(e) => {
-                        ceprintln!("<red>Something went wrong! Error: {:?}</>", e);
-                        return;
-                    }
-                };
-                match response.response_code {
-                    200 => {
-                        remove_local_auth().unwrap();
-                        cprintln!("<green>You are now signed out</>");
-                    }
-                    304 => cprintln!("<yellow>You were already signed out</>"),
-                    404 => cprintln!("<yellow>The local user does no longer exist in passport</>"),
-                    _ => {}
-                }
-            })
-        });
+    fn execute(&self) -> Result<(), anyhow::Error> {
+        let nm: NetworkManager = NetworkManager::new();
+        let response: SignOutRes = match nm.sign_out() {
+            Ok(res) => res,
+            Err(e) => {
+                ceprintln!("<red>Something went wrong! Error: {:?}</>", e);
+                return Err(e);
+            }
+        };
+        match response.response_code {
+            200 => {
+                remove_local_auth().unwrap();
+                cprintln!("<green>You are now signed out</>");
+            }
+            304 => cprintln!("<yellow>You were already signed out</>"),
+            404 => cprintln!("<yellow>The local user does no longer exist in passport</>"),
+            _ => {}
+        }
         Ok(())
     }
 }

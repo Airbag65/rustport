@@ -23,28 +23,23 @@ pub struct LoginRes {
 
 impl NetworkManager {
     #[allow(unused)]
-    pub async fn login(
-        &self,
-        email: String,
-        password: String,
-    ) -> Result<LoginRes, Box<dyn std::error::Error>> {
+    pub fn login(&self, email: String, password: String) -> Result<LoginRes, anyhow::Error> {
         let req_body: LoginReq = LoginReq {
             email: email,
             password: password,
         };
         let req_string: String = serde_json::to_string(&req_body)?;
-        let res: reqwest::Response = self
+        let res: reqwest::blocking::Response = self
             .client
             .post("https://".to_owned() + get_ip().as_str() + ":443/auth/login")
             .header("Content-Type", "application/json")
             .body(req_string.clone())
-            .send()
-            .await?;
+            .send()?;
         let status_code: reqwest::StatusCode = res.status();
 
         let mut res_obj: LoginRes;
         if status_code.as_u16() == 200 {
-            res_obj = serde_json::from_str(res.text().await.unwrap().as_str())?;
+            res_obj = serde_json::from_str(res.text().unwrap().as_str())?;
             Ok(res_obj)
         } else {
             Ok(LoginRes {

@@ -16,9 +16,9 @@ struct RemoveReq {
 
 impl NetworkManager {
     #[allow(unused)]
-    pub async fn remove(&self, host_name: String) -> Result<bool, Box<dyn std::error::Error>> {
+    pub fn remove(&self, host_name: String) -> Result<bool, anyhow::Error> {
         let token = ensure_auth();
-        let list = self.list(&token).await?;
+        let list = self.list(&token)?;
         if !list.hosts.iter().any(|host| host_name.contains(host)) {
             cprintln!(
                 "<red>Password for '{}' does not exist\nRun 'passport list' to see available passwords",
@@ -42,13 +42,12 @@ impl NetworkManager {
             exit(0);
         }
 
-        let res: reqwest::Response = self
+        let res: reqwest::blocking::Response = self
             .client
             .delete("https://".to_owned() + get_ip().as_str() + ":443/pwd/remove")
             .header("Authorization", String::from(format!("Bearer {}", token)))
             .body(req_string)
-            .send()
-            .await?;
+            .send()?;
         let status = res.status();
         if status.as_u16() == 200 {
             return Ok(true);

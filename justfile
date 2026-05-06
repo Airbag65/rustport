@@ -42,4 +42,4 @@ update: build
     @cp ./target/release/rp ~/.cargo/bin/pp
     @cp ./target/release/rp ~/.cargo/bin/passport
     @echo
-    @echo "passport ( Binary: [passport| pp] ) has been updated."
+    @echo "passport ( Binary: [passport | pp] ) has been updated."

@@ -15,12 +15,12 @@ pub struct EditCommand {
 }
 
 impl Command for EditCommand {
-    fn execute(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn execute(&self) -> Result<(), anyhow::Error> {
         let nm: NetworkManager = NetworkManager::new();
         block_in_place(move || {
             Handle::current().block_on(async move {
                 let token: String = ensure_auth();
-                let possible_hosts = nm.list(&token).await.unwrap();
+                let possible_hosts = nm.list(&token).unwrap();
                 print!("\x1B[2J\x1B[1;1H");
                 if !possible_hosts
                     .hosts
@@ -59,7 +59,6 @@ impl Command for EditCommand {
                 if confirmation_prompt("Update password?", true) {
                     let res: bool = nm
                         .edit_password(String::from(&self.value), new_password)
-                        .await
                         .unwrap();
                     if !res {
                         cprintln!("<red>Something went wrong!</>");

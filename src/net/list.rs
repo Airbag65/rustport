@@ -8,15 +8,14 @@ pub struct ListRes {
 }
 
 impl NetworkManager {
-    pub async fn list(&self, token: &str) -> Result<ListRes, Box<dyn std::error::Error>> {
-        let res: reqwest::Response = self
+    pub fn list(&self, token: &str) -> Result<ListRes, anyhow::Error> {
+        let res: reqwest::blocking::Response = self
             .client
             .get("https://".to_owned() + get_ip().as_str() + ":443/pwd/getHosts")
             .header("Authorization", "Bearer ".to_owned() + token)
             .send()
-            .await
             .unwrap();
-        let hosts: ListRes = serde_json::from_str(res.text().await?.as_str())?;
+        let hosts: ListRes = serde_json::from_str(res.text()?.as_str())?;
         Ok(hosts)
     }
 }
